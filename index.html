@@ -323,12 +323,12 @@
 
   <!-- Tabs -->
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('utm')">⚡ UTM Builder</button>
-    <button class="tab" onclick="switchTab('calendar')">📅 Calendar Link</button>
-    <button class="tab" onclick="switchTab('ics')">📎 ICS Download</button>
-    <button class="tab" onclick="switchTab('qr')">◼ QR Code</button>
-    <button class="tab" onclick="switchTab('short')">🔗 URL Shortener</button>
-    <button class="tab" onclick="switchTab('countdown')">⏱ Countdown</button>
+    <button class="tab active" onclick="switchTab(event,'utm')">⚡ UTM Builder</button>
+    <button class="tab" onclick="switchTab(event,'calendar')">📅 Calendar Link</button>
+    <button class="tab" onclick="switchTab(event,'ics')">📎 ICS Download</button>
+    <button class="tab" onclick="switchTab(event,'qr')">◼ QR Code</button>
+    <button class="tab" onclick="switchTab(event,'short')">🔗 URL Shortener</button>
+    <button class="tab" onclick="switchTab(event,'countdown')">⏱ Countdown</button>
   </div>
 
   <!-- UTM Builder -->
@@ -707,7 +707,7 @@
 
 <script>
 // ─── TAB SWITCHING ─────────────────────────────────────────────────────────
-function switchTab(name) {
+function switchTab(event, name) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   event.target.classList.add('active');
@@ -1169,5 +1169,6 @@ function cdReset() {
   clearInterval(cdPreviewInterval);
 }
 
+</script>
 </body>
 </html>
