@@ -584,24 +584,62 @@
   <!-- ICS -->
   <div id="panel-ics" class="panel">
     <div class="section-title"><span class="dot" style="background:var(--accent3)"></span>ICS File Generator</div>
-    <p class="section-desc">Create a downloadable .ics file for any calendar app.</p>
+    <p class="section-desc">Create a downloadable .ics file — works with Apple Calendar, Google Calendar, Outlook, and any RFC 5545 app.</p>
     <div class="card">
       <div class="form-grid">
+
+        <!-- Timezone FIRST — same as Calendar Link Generator -->
+        <div class="field form-full">
+          <label>Event Timezone * <span style="color:var(--muted);font-size:0.65rem;">— all dates & times below are in this timezone</span></label>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <select id="ics-tz" style="flex:1;" onchange="icsTimezoneChanged()">
+              <option value="Asia/Singapore">Asia/Singapore (SGT, UTC+8)</option>
+              <option value="Asia/Kuala_Lumpur">Asia/Kuala Lumpur (MYT, UTC+8)</option>
+              <option value="Asia/Jakarta">Asia/Jakarta (WIB, UTC+7)</option>
+              <option value="Asia/Bangkok">Asia/Bangkok (ICT, UTC+7)</option>
+              <option value="Asia/Manila">Asia/Manila (PHT, UTC+8)</option>
+              <option value="Asia/Hong_Kong">Asia/Hong Kong (HKT, UTC+8)</option>
+              <option value="Asia/Tokyo">Asia/Tokyo (JST, UTC+9)</option>
+              <option value="Asia/Seoul">Asia/Seoul (KST, UTC+9)</option>
+              <option value="Asia/Shanghai">Asia/Shanghai (CST, UTC+8)</option>
+              <option value="Asia/Dubai">Asia/Dubai (GST, UTC+4)</option>
+              <option value="Asia/Kolkata">Asia/Kolkata (IST, UTC+5:30)</option>
+              <option value="Europe/London">Europe/London (GMT/BST)</option>
+              <option value="Europe/Paris">Europe/Paris (CET/CEST)</option>
+              <option value="Europe/Berlin">Europe/Berlin (CET/CEST)</option>
+              <option value="America/New_York">America/New_York (EST/EDT)</option>
+              <option value="America/Chicago">America/Chicago (CST/CDT)</option>
+              <option value="America/Los_Angeles">America/Los_Angeles (PST/PDT)</option>
+              <option value="America/Sao_Paulo">America/Sao Paulo (BRT)</option>
+              <option value="Australia/Sydney">Australia/Sydney (AEST/AEDT)</option>
+              <option value="Pacific/Auckland">Pacific/Auckland (NZST/NZDT)</option>
+              <option value="UTC">UTC</option>
+            </select>
+            <span id="ics-tz-detected" style="font-size:0.7rem;color:var(--accent);white-space:nowrap;"></span>
+          </div>
+          <div id="ics-tz-now" style="font-size:0.72rem;color:var(--muted);margin-top:6px;"></div>
+        </div>
+
         <div class="field form-full">
           <label>Event Title *</label>
           <input type="text" id="ics-title" placeholder="Team Kickoff Meeting">
         </div>
         <div class="field">
-          <label>Start Date & Time *</label>
-          <input type="datetime-local" id="ics-start">
+          <label>Start Date & Time * <span style="color:var(--muted);font-size:0.65rem;">in selected timezone</span></label>
+          <input type="datetime-local" id="ics-start" onchange="icsUpdateTimes()">
         </div>
         <div class="field">
-          <label>End Date & Time *</label>
-          <input type="datetime-local" id="ics-end">
+          <label>End Date & Time * <span style="color:var(--muted);font-size:0.65rem;">in selected timezone</span></label>
+          <input type="datetime-local" id="ics-end" onchange="icsUpdateTimes()">
+        </div>
+        <div id="ics-time-preview" class="field form-full" style="display:none;">
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:0.75rem;color:var(--muted);line-height:1.8;">
+            <span id="ics-time-preview-text"></span>
+          </div>
         </div>
         <div class="field form-full">
-          <label>Location</label>
-          <input type="text" id="ics-location" placeholder="Zoom link or physical address">
+          <label>Location <span style="color:var(--muted);font-size:0.65rem;">— defaults to event timezone city</span></label>
+          <input type="text" id="ics-location" placeholder="Auto-filled from timezone · or enter Zoom URL / address">
         </div>
         <div class="field form-full">
           <label>Description / Notes</label>
@@ -614,32 +652,6 @@
         <div class="field">
           <label>Organizer Email</label>
           <input type="email" id="ics-email" placeholder="team@company.com">
-        </div>
-        <div class="field">
-          <label>Event Timezone *</label>
-          <select id="ics-tz">
-            <option value="Asia/Singapore">Asia/Singapore (SGT, UTC+8)</option>
-            <option value="Asia/Kuala_Lumpur">Asia/Kuala Lumpur (MYT, UTC+8)</option>
-            <option value="Asia/Jakarta">Asia/Jakarta (WIB, UTC+7)</option>
-            <option value="Asia/Bangkok">Asia/Bangkok (ICT, UTC+7)</option>
-            <option value="Asia/Manila">Asia/Manila (PHT, UTC+8)</option>
-            <option value="Asia/Hong_Kong">Asia/Hong Kong (HKT, UTC+8)</option>
-            <option value="Asia/Tokyo">Asia/Tokyo (JST, UTC+9)</option>
-            <option value="Asia/Seoul">Asia/Seoul (KST, UTC+9)</option>
-            <option value="Asia/Shanghai">Asia/Shanghai (CST, UTC+8)</option>
-            <option value="Asia/Dubai">Asia/Dubai (GST, UTC+4)</option>
-            <option value="Asia/Kolkata">Asia/Kolkata (IST, UTC+5:30)</option>
-            <option value="Europe/London">Europe/London (GMT/BST)</option>
-            <option value="Europe/Paris">Europe/Paris (CET/CEST)</option>
-            <option value="Europe/Berlin">Europe/Berlin (CET/CEST)</option>
-            <option value="America/New_York">America/New_York (EST/EDT)</option>
-            <option value="America/Chicago">America/Chicago (CST/CDT)</option>
-            <option value="America/Los_Angeles">America/Los_Angeles (PST/PDT)</option>
-            <option value="America/Sao_Paulo">America/Sao Paulo (BRT)</option>
-            <option value="Australia/Sydney">Australia/Sydney (AEST/AEDT)</option>
-            <option value="Pacific/Auckland">Pacific/Auckland (NZST/NZDT)</option>
-            <option value="UTC">UTC</option>
-          </select>
         </div>
         <div class="field">
           <label>Reminder (minutes before)</label>
@@ -666,13 +678,13 @@
       </div>
       <div class="btn-row">
         <button class="btn btn-primary" onclick="downloadICS()">Download .ics File</button>
-        <button class="btn btn-secondary" onclick="previewICS()">Preview</button>
+        <button class="btn btn-secondary" onclick="previewICS()">Preview ICS</button>
       </div>
       <div class="output-box" id="ics-output">
         <div class="output-label">ICS Preview</div>
         <div class="output-url" id="ics-result" style="font-size:0.72rem;white-space:pre;overflow-x:auto;"></div>
       </div>
-      <div class="note">💡 The .ics file works with Apple Calendar, Google Calendar, Outlook, and any RFC 5545-compliant app.</div>
+      <div class="note">💡 The .ics file stores wall-clock time in the selected timezone using the RFC 5545 <code>DTSTART;TZID=</code> format — guaranteed to display at the correct local time in Apple Calendar, Google Calendar, and Outlook.</div>
     </div>
   </div>
 
@@ -1388,17 +1400,51 @@ function formatReadable(dtLocal, tz) {
   }).format(d);
 }
 
+// ─── ICS TIMEZONE HELPERS ──────────────────────────────────────────────────
+function icsTimezoneChanged() {
+  const tz = document.getElementById('ics-tz').value;
+  const nowEl = document.getElementById('ics-tz-now');
+  if (nowEl) nowEl.textContent = `Current time in this timezone: ${calGetCurrentTZTime(tz)}`;
+  const locEl = document.getElementById('ics-location');
+  if (locEl) {
+    const city = TZ_CITY_MAP[tz] || tz.split('/').pop().replace(/_/g,' ');
+    const current = locEl.value.trim();
+    const knownCities = Object.values(TZ_CITY_MAP);
+    if (!current || knownCities.includes(current)) locEl.value = city;
+  }
+  icsUpdateTimes();
+}
+
+function icsUpdateTimes() {
+  const tz    = document.getElementById('ics-tz').value;
+  const start = document.getElementById('ics-start').value;
+  const end   = document.getElementById('ics-end').value;
+  const preview = document.getElementById('ics-time-preview');
+  const text    = document.getElementById('ics-time-preview-text');
+  if (!start && !end) { if (preview) preview.style.display = 'none'; return; }
+  let msg = '';
+  if (start) {
+    const utc = wallClockToUTC(start, tz);
+    msg += `Start: ${formatReadable(start, tz)} · UTC: ${utc.toUTCString().replace(' GMT','')} UTC`;
+  }
+  if (end) {
+    const utc = wallClockToUTC(end, tz);
+    msg += (start ? '\n' : '') + `End: ${formatReadable(end, tz)} · UTC: ${utc.toUTCString().replace(' GMT','')} UTC`;
+  }
+  if (text) text.textContent = msg;
+  if (preview) preview.style.display = 'block';
+}
+
 // Auto-detect browser timezone and pre-select it in both dropdowns
 function detectAndSetTimezone() {
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   ['cal-tz','ics-tz'].forEach(id => {
     const sel = document.getElementById(id);
     if (!sel) return;
-    // Try exact match
     for (let opt of sel.options) {
       if (opt.value === tz) { sel.value = tz; break; }
     }
-    // Fallback: match by region prefix
     if (sel.value !== tz) {
       const region = tz.split('/')[0];
       for (let opt of sel.options) {
@@ -1406,27 +1452,38 @@ function detectAndSetTimezone() {
       }
     }
   });
-  // Show "detected from device" badge on calendar
-  const badge = document.getElementById('cal-tz-detected');
-  if (badge) badge.textContent = '✓ Auto-detected from your device';
-  // Show current time in detected tz
-  const nowEl = document.getElementById('cal-tz-now');
-  const calTz = document.getElementById('cal-tz');
-  if (nowEl && calTz) {
-    nowEl.textContent = `Current time in this timezone: ${calGetCurrentTZTime(calTz.value)}`;
-    // Tick every second
-    setInterval(() => {
-      const t = document.getElementById('cal-tz');
-      const n = document.getElementById('cal-tz-now');
-      if (t && n) n.textContent = `Current time in this timezone: ${calGetCurrentTZTime(t.value)}`;
-    }, 1000);
+
+  // Calendar panel — badge, live clock, location
+  const calBadge = document.getElementById('cal-tz-detected');
+  const calNow   = document.getElementById('cal-tz-now');
+  const calTz    = document.getElementById('cal-tz');
+  const calLoc   = document.getElementById('cal-location');
+  if (calBadge) calBadge.textContent = '✓ Auto-detected from your device';
+  if (calNow && calTz) calNow.textContent = `Current time in this timezone: ${calGetCurrentTZTime(calTz.value)}`;
+  if (calLoc && !calLoc.value && calTz) {
+    calLoc.value = TZ_CITY_MAP[calTz.value] || calTz.value.split('/').pop().replace(/_/g,' ');
   }
-  // Auto-fill location
-  const calTzVal = calTz ? calTz.value : tz;
-  const locEl = document.getElementById('cal-location');
-  if (locEl && !locEl.value) {
-    locEl.value = TZ_CITY_MAP[calTzVal] || calTzVal.split('/').pop().replace(/_/g,' ');
+
+  // ICS panel — badge, live clock, location
+  const icsBadge = document.getElementById('ics-tz-detected');
+  const icsNow   = document.getElementById('ics-tz-now');
+  const icsTz    = document.getElementById('ics-tz');
+  const icsLoc   = document.getElementById('ics-location');
+  if (icsBadge) icsBadge.textContent = '✓ Auto-detected from your device';
+  if (icsNow && icsTz) icsNow.textContent = `Current time in this timezone: ${calGetCurrentTZTime(icsTz.value)}`;
+  if (icsLoc && !icsLoc.value && icsTz) {
+    icsLoc.value = TZ_CITY_MAP[icsTz.value] || icsTz.value.split('/').pop().replace(/_/g,' ');
   }
+
+  // Tick both clocks every second
+  setInterval(() => {
+    const ct = document.getElementById('cal-tz');
+    const cn = document.getElementById('cal-tz-now');
+    if (ct && cn) cn.textContent = `Current time in this timezone: ${calGetCurrentTZTime(ct.value)}`;
+    const it = document.getElementById('ics-tz');
+    const in_ = document.getElementById('ics-tz-now');
+    if (it && in_) in_.textContent = `Current time in this timezone: ${calGetCurrentTZTime(it.value)}`;
+  }, 1000);
 }
 
 // ─── CALENDAR LINK ─────────────────────────────────────────────────────────
