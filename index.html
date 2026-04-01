@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarketKit — One-Stop Marketing Tools</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1c1c28;
+    --border: #2a2a3d;
+    --accent: #6ee7b7;
+    --accent2: #818cf8;
+    --accent3: #f472b6;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --danger: #f87171;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Mono', monospace;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* BG grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(110,231,183,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(110,231,183,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* Header */
+  header {
+    padding: 48px 0 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+    background: var(--surface);
+    padding: 6px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+  }
+
+  .tab {
+    padding: 10px 18px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .tab:hover { color: var(--text); background: var(--surface2); }
+
+  .tab.active {
+    background: var(--surface2);
+    color: var(--accent);
+    border: 1px solid var(--border);
+  }
+
+  /* Panel */
+  .panel { display: none; animation: fadeIn 0.3s ease; }
+  .panel.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Section titles */
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+  }
+
+  .section-desc { color: var(--muted); font-size: 0.78rem; margin-bottom: 24px; letter-spacing: 0.03em; }
+
+  /* Card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 16px;
+  }
+
+  /* Form elements */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+  .form-full { grid-column: 1 / -1; }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  label { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  input, select, textarea {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    padding: 10px 14px;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(110,231,183,0.08);
+  }
+
+  select option { background: var(--surface2); }
+  textarea { resize: vertical; min-height: 80px; }
+
+  /* Buttons */
+  .btn {
+    padding: 11px 22px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    cursor: pointer;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0a0a0f;
+  }
+
+  .btn-primary:hover { background: #34d399; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(110,231,183,0.25); }
+
+  .btn-secondary {
+    background: var(--surface2);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  .btn-row { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; align-items: center; }
+
+  /* Output box */
+  .output-box {
+    margin-top: 20px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    display: none;
+  }
+
+  .output-box.show { display: block; animation: fadeIn 0.3s ease; }
+
+  .output-label {
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .output-url {
+    word-break: break-all;
+    font-size: 0.8rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .output-url a { color: var(--accent2); text-decoration: none; }
+  .output-url a:hover { text-decoration: underline; }
+
+  /* QR */
+  #qr-output {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-top: 20px;
+    display: none;
+  }
+
+  #qr-output.show { display: flex; animation: fadeIn 0.3s ease; }
+
+  #qr-canvas {
+    background: white;
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  /* Tag pills */
+  .tag {
+    display: inline-block;
+    background: rgba(110,231,183,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(110,231,183,0.2);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 0.68rem;
+    margin-right: 4px;
+    margin-top: 4px;
+  }
+
+  /* Copy flash */
+  .copied-flash {
+    color: var(--accent);
+    font-size: 0.72rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .copied-flash.show { opacity: 1; }
+
+  /* Divider */
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+  /* Short URL list */
+  .url-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .url-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .url-item .short { color: var(--accent2); font-size: 0.8rem; }
+  .url-item .original { color: var(--muted); font-size: 0.72rem; max-width: 400px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* Color row for QR */
+  .color-row { display: flex; gap: 14px; align-items: flex-end; flex-wrap: wrap; }
+  .color-row .field { flex: 1; min-width: 100px; }
+
+  /* ICS note */
+  .note {
+    background: rgba(129,140,248,0.08);
+    border: 1px solid rgba(129,140,248,0.2);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 0.75rem;
+    color: var(--accent2);
+    margin-top: 12px;
+  }
+
+  @media (max-width: 600px) {
+    .form-grid, .form-grid.three { grid-template-columns: 1fr; }
+    .logo { font-size: 1.8rem; }
+    .tabs { gap: 2px; }
+    .tab { padding: 8px 12px; font-size: 0.7rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <header>
+    <div class="logo">MarketKit</div>
+    <p>One-stop marketing link toolkit · UTM · Calendar · ICS · QR · Short URLs · Countdown</p>
+  </header>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('utm')">⚡ UTM Builder</button>
+    <button class="tab" onclick="switchTab('calendar')">📅 Calendar Link</button>
+    <button class="tab" onclick="switchTab('ics')">📎 ICS Download</button>
+    <button class="tab" onclick="switchTab('qr')">◼ QR Code</button>
+    <button class="tab" onclick="switchTab('short')">🔗 URL Shortener</button>
+    <button class="tab" onclick="switchTab('countdown')">⏱ Countdown</button>
+  </div>
+
+  <!-- UTM Builder -->
+  <div id="panel-utm" class="panel active">
+    <div class="section-title"><span class="dot"></span>UTM Link Builder</div>
+    <p class="section-desc">Build campaign tracking URLs for Google Analytics and other platforms.</p>
+    <div class="card">
+      <div class="form-grid">
+        <div class="field form-full">
+          <label>Base URL *</label>
+          <input type="url" id="utm-url" placeholder="https://yoursite.com/page">
+        </div>
+        <div class="field">
+          <label>utm_source *</label>
+          <input type="text" id="utm-source" placeholder="google, facebook, newsletter">
+        </div>
+        <div class="field">
+          <label>utm_medium *</label>
+          <input type="text" id="utm-medium" placeholder="cpc, email, social">
+        </div>
+        <div class="field">
+          <label>utm_campaign *</label>
+          <input type="text" id="utm-campaign" placeholder="spring_sale_2026">
+        </div>
+        <div class="field">
+          <label>utm_content</label>
+          <input type="text" id="utm-content" placeholder="banner_top, cta_button">
+        </div>
+        <div class="field">
+          <label>utm_term</label>
+          <input type="text" id="utm-term" placeholder="running+shoes">
+        </div>
+        <div class="field">
+          <label>utm_id (GA4)</label>
+          <input type="text" id="utm-id" placeholder="campaign_id_123">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="buildUTM()">Generate UTM Link</button>
+        <button class="btn btn-secondary" onclick="clearUTM()">Clear</button>
+        <span class="copied-flash" id="utm-copied">✓ Copied!</span>
+      </div>
+      <div class="output-box" id="utm-output">
+        <div class="output-label">Generated URL</div>
+        <div class="output-url" id="utm-result"></div>
+        <div class="divider"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-secondary" onclick="copyText('utm-result','utm-copied')">Copy URL</button>
+          <button class="btn btn-secondary" onclick="sendToShortener('utm')">→ Shorten this</button>
+          <button class="btn btn-secondary" onclick="sendToQR('utm')">→ Make QR</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick presets -->
+    <div class="card">
+      <div class="section-title" style="font-size:1rem;margin-bottom:10px;">Quick Presets</div>
+      <div>
+        <span class="tag" style="cursor:pointer" onclick="applyPreset('google-cpc')">Google CPC</span>
+        <span class="tag" style="cursor:pointer" onclick="applyPreset('meta-paid')">Meta Paid</span>
+        <span class="tag" style="cursor:pointer" onclick="applyPreset('email')">Email Campaign</span>
+        <span class="tag" style="cursor:pointer" onclick="applyPreset('linkedin')">LinkedIn</span>
+        <span class="tag" style="cursor:pointer" onclick="applyPreset('tiktok')">TikTok</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Calendar Link -->
+  <div id="panel-calendar" class="panel">
+    <div class="section-title"><span class="dot" style="background:var(--accent2)"></span>Calendar Link Generator</div>
+    <p class="section-desc">Generate Google, Outlook & Apple Calendar add-to-calendar links.</p>
+    <div class="card">
+      <div class="form-grid">
+        <div class="field form-full">
+          <label>Event Title *</label>
+          <input type="text" id="cal-title" placeholder="Product Launch Webinar">
+        </div>
+        <div class="field">
+          <label>Start Date *</label>
+          <input type="datetime-local" id="cal-start">
+        </div>
+        <div class="field">
+          <label>End Date *</label>
+          <input type="datetime-local" id="cal-end">
+        </div>
+        <div class="field form-full">
+          <label>Location / Meeting URL</label>
+          <input type="text" id="cal-location" placeholder="https://zoom.us/j/... or 123 Main St">
+        </div>
+        <div class="field form-full">
+          <label>Description</label>
+          <textarea id="cal-desc" placeholder="Join us for our quarterly webinar..."></textarea>
+        </div>
+        <div class="field">
+          <label>Calendar Platform</label>
+          <select id="cal-platform">
+            <option value="google">Google Calendar</option>
+            <option value="outlook">Outlook / Office 365</option>
+            <option value="yahoo">Yahoo Calendar</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="buildCalendar()">Generate Link</button>
+        <span class="copied-flash" id="cal-copied">✓ Copied!</span>
+      </div>
+      <div class="output-box" id="cal-output">
+        <div class="output-label">Calendar Link</div>
+        <div class="output-url" id="cal-result"></div>
+        <div class="divider"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-secondary" onclick="copyText('cal-result','cal-copied')">Copy Link</button>
+          <button class="btn btn-secondary" onclick="sendToQR('cal')">→ Make QR</button>
+          <button class="btn btn-secondary" onclick="sendToShortener('cal')">→ Shorten</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ICS -->
+  <div id="panel-ics" class="panel">
+    <div class="section-title"><span class="dot" style="background:var(--accent3)"></span>ICS File Generator</div>
+    <p class="section-desc">Create a downloadable .ics file for any calendar app.</p>
+    <div class="card">
+      <div class="form-grid">
+        <div class="field form-full">
+          <label>Event Title *</label>
+          <input type="text" id="ics-title" placeholder="Team Kickoff Meeting">
+        </div>
+        <div class="field">
+          <label>Start Date & Time *</label>
+          <input type="datetime-local" id="ics-start">
+        </div>
+        <div class="field">
+          <label>End Date & Time *</label>
+          <input type="datetime-local" id="ics-end">
+        </div>
+        <div class="field form-full">
+          <label>Location</label>
+          <input type="text" id="ics-location" placeholder="Zoom link or physical address">
+        </div>
+        <div class="field form-full">
+          <label>Description / Notes</label>
+          <textarea id="ics-desc" placeholder="Agenda, links, notes..."></textarea>
+        </div>
+        <div class="field">
+          <label>Organizer Name</label>
+          <input type="text" id="ics-organizer" placeholder="Marketing Team">
+        </div>
+        <div class="field">
+          <label>Organizer Email</label>
+          <input type="email" id="ics-email" placeholder="team@company.com">
+        </div>
+        <div class="field">
+          <label>Reminder (minutes before)</label>
+          <select id="ics-reminder">
+            <option value="0">No reminder</option>
+            <option value="5">5 minutes</option>
+            <option value="10">10 minutes</option>
+            <option value="15" selected>15 minutes</option>
+            <option value="30">30 minutes</option>
+            <option value="60">1 hour</option>
+            <option value="1440">1 day</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Recurrence</label>
+          <select id="ics-recurrence">
+            <option value="">None</option>
+            <option value="DAILY">Daily</option>
+            <option value="WEEKLY">Weekly</option>
+            <option value="MONTHLY">Monthly</option>
+            <option value="YEARLY">Yearly</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="downloadICS()">Download .ics File</button>
+        <button class="btn btn-secondary" onclick="previewICS()">Preview</button>
+      </div>
+      <div class="output-box" id="ics-output">
+        <div class="output-label">ICS Preview</div>
+        <div class="output-url" id="ics-result" style="font-size:0.72rem;white-space:pre;overflow-x:auto;"></div>
+      </div>
+      <div class="note">💡 The .ics file works with Apple Calendar, Google Calendar, Outlook, and any RFC 5545-compliant app.</div>
+    </div>
+  </div>
+
+  <!-- QR Code -->
+  <div id="panel-qr" class="panel">
+    <div class="section-title"><span class="dot" style="background:#fbbf24"></span>QR Code Generator</div>
+    <p class="section-desc">Generate QR codes for URLs, text, vCards, and more.</p>
+    <div class="card">
+      <div class="form-grid">
+        <div class="field form-full">
+          <label>Content *</label>
+          <textarea id="qr-content" placeholder="https://yoursite.com or any text, email, phone..."></textarea>
+        </div>
+        <div class="field">
+          <label>QR Size (px)</label>
+          <select id="qr-size">
+            <option value="128">128 × 128</option>
+            <option value="200">200 × 200</option>
+            <option value="256" selected>256 × 256</option>
+            <option value="400">400 × 400</option>
+            <option value="512">512 × 512</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Error Correction</label>
+          <select id="qr-ec">
+            <option value="L">Low (L)</option>
+            <option value="M" selected>Medium (M)</option>
+            <option value="Q">Quartile (Q)</option>
+            <option value="H">High (H)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Dark Color</label>
+          <input type="color" id="qr-dark" value="#000000" style="height:42px;cursor:pointer;">
+        </div>
+        <div class="field">
+          <label>Light Color</label>
+          <input type="color" id="qr-light" value="#ffffff" style="height:42px;cursor:pointer;">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="generateQR()">Generate QR Code</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('qr-content').value=''">Clear</button>
+      </div>
+      <div id="qr-output">
+        <div id="qr-canvas"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="downloadQR()">Download PNG</button>
+          <button class="btn btn-secondary" onclick="downloadQRSVG()">Download SVG</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- URL Shortener -->
+  <div id="panel-short" class="panel">
+    <div class="section-title"><span class="dot" style="background:var(--accent3)"></span>URL Shortener</div>
+    <p class="section-desc">Shorten long URLs using TinyURL's free API. No sign-up required.</p>
+    <div class="card">
+      <div class="form-grid">
+        <div class="field form-full">
+          <label>Long URL *</label>
+          <input type="url" id="short-url" placeholder="https://yoursite.com/very/long/path?with=params">
+        </div>
+        <div class="field">
+          <label>Custom Alias (optional)</label>
+          <input type="text" id="short-alias" placeholder="my-campaign-link" maxlength="30">
+        </div>
+        <div class="field">
+          <label>Service</label>
+          <select id="short-service">
+            <option value="tinyurl">TinyURL</option>
+            <option value="manual">Manual (copy-paste)</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="shortenURL()">Shorten URL</button>
+        <span id="short-loading" style="color:var(--muted);font-size:0.75rem;display:none;">Shortening...</span>
+        <span class="copied-flash" id="short-copied">✓ Copied!</span>
+      </div>
+      <div class="output-box" id="short-output">
+        <div class="output-label">Shortened URL</div>
+        <div class="output-url" id="short-result"></div>
+        <div class="divider"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-secondary" onclick="copyText('short-result','short-copied')">Copy</button>
+          <button class="btn btn-secondary" onclick="sendToQR('short')">→ Make QR</button>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div style="font-size:0.72rem;color:var(--muted);">Recent shortened URLs (this session)</div>
+      <div class="url-list" id="short-history"></div>
+      <div class="note">💡 TinyURL links are permanent and free. For branded domains (bit.ly, rebrandly), use those services directly.</div>
+    </div>
+  </div>
+
+  <!-- Countdown Timer -->
+  <div id="panel-countdown" class="panel">
+    <div class="section-title"><span class="dot" style="background:#fb923c"></span>Countdown Timer Embed</div>
+    <p class="section-desc">Generate a live countdown widget you can embed on any landing page or email.</p>
+
+    <!-- Config card -->
+    <div class="card">
+      <div class="form-grid">
+        <div class="field form-full">
+          <label>Event / Campaign Name *</label>
+          <input type="text" id="cd-title" placeholder="Flash Sale Ends In…" oninput="cdLivePreview()">
+        </div>
+        <div class="field">
+          <label>Target Date & Time *</label>
+          <input type="datetime-local" id="cd-deadline" oninput="cdLivePreview()">
+        </div>
+        <div class="field">
+          <label>Timezone</label>
+          <select id="cd-tz" onchange="cdLivePreview()">
+            <option value="local">My local timezone</option>
+            <option value="UTC">UTC</option>
+            <option value="Asia/Singapore">Asia/Singapore (SGT)</option>
+            <option value="America/New_York">America/New_York (EST/EDT)</option>
+            <option value="America/Los_Angeles">America/Los_Angeles (PST/PDT)</option>
+            <option value="Europe/London">Europe/London (GMT/BST)</option>
+            <option value="Europe/Paris">Europe/Paris (CET/CEST)</option>
+            <option value="Australia/Sydney">Australia/Sydney (AEST)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Style</label>
+          <select id="cd-style" onchange="cdLivePreview()">
+            <option value="dark">Dark (default)</option>
+            <option value="light">Light</option>
+            <option value="minimal">Minimal / borderless</option>
+            <option value="accent">Accent colour</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Accent Colour</label>
+          <input type="color" id="cd-color" value="#6ee7b7" style="height:42px;cursor:pointer;" oninput="cdLivePreview()">
+        </div>
+        <div class="field">
+          <label>Show Labels</label>
+          <select id="cd-labels" onchange="cdLivePreview()">
+            <option value="yes">Yes — Days / Hours / Mins / Secs</option>
+            <option value="no">No — numbers only</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Expired Message</label>
+          <input type="text" id="cd-expired" value="Offer has ended." oninput="cdLivePreview()">
+        </div>
+        <div class="field">
+          <label>Widget Width</label>
+          <select id="cd-width" onchange="cdLivePreview()">
+            <option value="100%">Full width (100%)</option>
+            <option value="600px">600 px</option>
+            <option value="480px">480 px</option>
+            <option value="360px">360 px</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live preview card -->
+    <div class="card">
+      <div class="output-label" style="display:block;margin-bottom:14px;">Live Preview</div>
+      <div id="cd-preview-wrap"></div>
+    </div>
+
+    <!-- Output card -->
+    <div class="card">
+      <div class="btn-row" style="margin-top:0">
+        <button class="btn btn-primary" onclick="cdGenerate()">Generate Embed Code</button>
+        <button class="btn btn-secondary" onclick="cdReset()">Reset</button>
+        <span class="copied-flash" id="cd-copied">✓ Copied!</span>
+      </div>
+      <div class="output-box" id="cd-output">
+        <div class="output-label">HTML Embed Snippet</div>
+        <pre id="cd-result" style="font-size:0.72rem;white-space:pre-wrap;word-break:break-all;line-height:1.6;color:var(--text);"></pre>
+        <div class="divider"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-secondary" onclick="cdCopyEmbed()">Copy Embed Code</button>
+          <button class="btn btn-secondary" onclick="cdDownload()">Download .html</button>
+        </div>
+      </div>
+      <div class="note">💡 Paste the snippet into any HTML page, email template (ESP with raw HTML support), or landing page builder. The timer runs purely in JavaScript — no external dependencies.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ─── TAB SWITCHING ─────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
+}
+
+// ─── UTILITIES ─────────────────────────────────────────────────────────────
+function copyText(elId, flashId) {
+  const el = document.getElementById(elId);
+  const text = el.innerText || el.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const flash = document.getElementById(flashId);
+    flash.classList.add('show');
+    setTimeout(() => flash.classList.remove('show'), 2000);
+  });
+}
+
+function showOutput(id, content, isHTML = false) {
+  const box = document.getElementById(id + '-output');
+  const result = document.getElementById(id + '-result');
+  box.classList.add('show');
+  if (isHTML) result.innerHTML = content;
+  else result.textContent = content;
+}
+
+function sendToQR(source) {
+  let content = '';
+  if (source === 'utm') content = document.getElementById('utm-result').textContent;
+  else if (source === 'cal') content = document.getElementById('cal-result').textContent;
+  else if (source === 'short') content = document.getElementById('short-result').textContent;
+  
+  document.getElementById('qr-content').value = content;
+  document.querySelectorAll('.tab')[3].click();
+  setTimeout(generateQR, 100);
+}
+
+function sendToShortener(source) {
+  let url = '';
+  if (source === 'utm') url = document.getElementById('utm-result').textContent;
+  else if (source === 'cal') url = document.getElementById('cal-result').textContent;
+  
+  document.getElementById('short-url').value = url;
+  document.querySelectorAll('.tab')[4].click();
+}
+
+// ─── UTM BUILDER ───────────────────────────────────────────────────────────
+function buildUTM() {
+  const base = document.getElementById('utm-url').value.trim();
+  if (!base) { alert('Please enter a Base URL'); return; }
+  
+  const params = {};
+  const fields = ['source','medium','campaign','content','term','id'];
+  fields.forEach(f => {
+    const val = document.getElementById('utm-' + f).value.trim();
+    if (val) params['utm_' + f] = val;
+  });
+  
+  if (!params.utm_source) { alert('utm_source is required'); return; }
+  
+  const url = new URL(base);
+  Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, v));
+  showOutput('utm', url.toString());
+}
+
+function clearUTM() {
+  ['url','source','medium','campaign','content','term','id'].forEach(f => {
+    document.getElementById('utm-' + f).value = '';
+  });
+  document.getElementById('utm-output').classList.remove('show');
+}
+
+function applyPreset(preset) {
+  const presets = {
+    'google-cpc': { source:'google', medium:'cpc', campaign:'', content:'', term:'' },
+    'meta-paid':  { source:'facebook', medium:'paid_social', campaign:'', content:'', term:'' },
+    'email':      { source:'newsletter', medium:'email', campaign:'', content:'', term:'' },
+    'linkedin':   { source:'linkedin', medium:'paid_social', campaign:'', content:'', term:'' },
+    'tiktok':     { source:'tiktok', medium:'paid_social', campaign:'', content:'', term:'' },
+  };
+  const p = presets[preset];
+  Object.entries(p).forEach(([k,v]) => document.getElementById('utm-'+k).value = v);
+}
+
+// ─── CALENDAR LINK ─────────────────────────────────────────────────────────
+function toUTCCalStr(dtLocal) {
+  const d = new Date(dtLocal);
+  return d.toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+}
+
+function buildCalendar() {
+  const title = document.getElementById('cal-title').value.trim();
+  const start = document.getElementById('cal-start').value;
+  const end = document.getElementById('cal-end').value;
+  const platform = document.getElementById('cal-platform').value;
+  const location = encodeURIComponent(document.getElementById('cal-location').value.trim());
+  const desc = encodeURIComponent(document.getElementById('cal-desc').value.trim());
+
+  if (!title || !start || !end) { alert('Title, start and end date are required'); return; }
+
+  const startUTC = toUTCCalStr(start);
+  const endUTC = toUTCCalStr(end);
+  const encTitle = encodeURIComponent(title);
+
+  let url = '';
+  if (platform === 'google') {
+    url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encTitle}&dates=${startUTC}/${endUTC}&details=${desc}&location=${location}`;
+  } else if (platform === 'outlook') {
+    const startISO = new Date(start).toISOString();
+    const endISO = new Date(end).toISOString();
+    url = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encTitle}&startdt=${encodeURIComponent(startISO)}&enddt=${encodeURIComponent(endISO)}&body=${desc}&location=${location}`;
+  } else if (platform === 'yahoo') {
+    url = `https://calendar.yahoo.com/?v=60&title=${encTitle}&st=${startUTC}&et=${endUTC}&desc=${desc}&in_loc=${location}`;
+  }
+
+  showOutput('cal', url, true);
+  document.getElementById('cal-result').innerHTML = `<a href="${url}" target="_blank">${url}</a>`;
+}
+
+// ─── ICS GENERATOR ─────────────────────────────────────────────────────────
+function toICSDate(dtLocal) {
+  return new Date(dtLocal).toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+}
+
+function buildICSContent() {
+  const title = document.getElementById('ics-title').value.trim();
+  const start = document.getElementById('ics-start').value;
+  const end = document.getElementById('ics-end').value;
+  const location = document.getElementById('ics-location').value.trim();
+  const desc = document.getElementById('ics-desc').value.trim().replace(/\n/g,'\\n');
+  const organizer = document.getElementById('ics-organizer').value.trim();
+  const email = document.getElementById('ics-email').value.trim();
+  const reminder = document.getElementById('ics-reminder').value;
+  const recurrence = document.getElementById('ics-recurrence').value;
+
+  if (!title || !start || !end) { alert('Title, start and end are required'); return null; }
+
+  const uid = Date.now() + '@marketkit';
+  const now = new Date().toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+
+  let ics = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//MarketKit//EN',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    `UID:${uid}`,
+    `DTSTAMP:${now}`,
+    `DTSTART:${toICSDate(start)}`,
+    `DTEND:${toICSDate(end)}`,
+    `SUMMARY:${title}`,
+  ];
+
+  if (location) ics.push(`LOCATION:${location}`);
+  if (desc) ics.push(`DESCRIPTION:${desc}`);
+  if (organizer || email) ics.push(`ORGANIZER;CN=${organizer || 'Organizer'}:mailto:${email || 'noreply@example.com'}`);
+  if (recurrence) ics.push(`RRULE:FREQ=${recurrence}`);
+
+  if (reminder !== '0') {
+    ics.push('BEGIN:VALARM','TRIGGER:-PT' + reminder + 'M','ACTION:DISPLAY',`DESCRIPTION:Reminder: ${title}`,'END:VALARM');
+  }
+
+  ics.push('END:VEVENT','END:VCALENDAR');
+  return ics.join('\r\n');
+}
+
+function downloadICS() {
+  const content = buildICSContent();
+  if (!content) return;
+  const blob = new Blob([content], { type: 'text/calendar;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (document.getElementById('ics-title').value.trim().replace(/\s+/g,'-') || 'event') + '.ics';
+  a.click();
+}
+
+function previewICS() {
+  const content = buildICSContent();
+  if (!content) return;
+  showOutput('ics', content);
+}
+
+// ─── QR CODE ───────────────────────────────────────────────────────────────
+let qrInstance = null;
+
+function generateQR() {
+  const content = document.getElementById('qr-content').value.trim();
+  if (!content) { alert('Enter content to encode'); return; }
+
+  const size = parseInt(document.getElementById('qr-size').value);
+  const dark = document.getElementById('qr-dark').value;
+  const light = document.getElementById('qr-light').value;
+  const ec = document.getElementById('qr-ec').value;
+
+  const container = document.getElementById('qr-canvas');
+  container.innerHTML = '';
+
+  const ecMap = { L: QRCode.CorrectLevel.L, M: QRCode.CorrectLevel.M, Q: QRCode.CorrectLevel.Q, H: QRCode.CorrectLevel.H };
+
+  qrInstance = new QRCode(container, {
+    text: content,
+    width: size,
+    height: size,
+    colorDark: dark,
+    colorLight: light,
+    correctLevel: ecMap[ec]
+  });
+
+  document.getElementById('qr-output').classList.add('show');
+}
+
+function downloadQR() {
+  const canvas = document.querySelector('#qr-canvas canvas');
+  if (!canvas) { alert('Generate a QR first'); return; }
+  const a = document.createElement('a');
+  a.download = 'qrcode.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+}
+
+function downloadQRSVG() {
+  const img = document.querySelector('#qr-canvas img');
+  if (!img) { alert('Generate a QR first'); return; }
+  // Convert canvas to SVG-wrapped image
+  const canvas = document.querySelector('#qr-canvas canvas');
+  const dataURL = canvas.toDataURL('image/png');
+  const size = parseInt(document.getElementById('qr-size').value);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
+  <image href="${dataURL}" width="${size}" height="${size}"/>
+</svg>`;
+  const blob = new Blob([svg], { type: 'image/svg+xml' });
+  const a = document.createElement('a');
+  a.download = 'qrcode.svg';
+  a.href = URL.createObjectURL(blob);
+  a.click();
+}
+
+// ─── URL SHORTENER ─────────────────────────────────────────────────────────
+const shortHistory = [];
+
+async function shortenURL() {
+  const url = document.getElementById('short-url').value.trim();
+  const alias = document.getElementById('short-alias').value.trim();
+  const service = document.getElementById('short-service').value;
+
+  if (!url) { alert('Enter a URL to shorten'); return; }
+
+  if (service === 'manual') {
+    const msg = `Copy your URL and paste it into:\n• tinyurl.com\n• bit.ly\n• rebrandly.com\n• short.io`;
+    alert(msg);
+    return;
+  }
+
+  const loading = document.getElementById('short-loading');
+  loading.style.display = 'inline';
+
+  try {
+    let apiUrl = `https://tinyurl.com/api-create.php?url=${encodeURIComponent(url)}`;
+    if (alias) apiUrl += `&alias=${encodeURIComponent(alias)}`;
+
+    const res = await fetch(apiUrl);
+    const short = await res.text();
+
+    if (short.startsWith('http')) {
+      document.getElementById('short-output').classList.add('show');
+      document.getElementById('short-result').textContent = short;
+      addToHistory(url, short);
+    } else {
+      throw new Error('Could not shorten — alias may be taken');
+    }
+  } catch(e) {
+    alert('Shortening failed: ' + e.message + '\n\nTry without a custom alias, or use tinyurl.com directly.');
+  } finally {
+    loading.style.display = 'none';
+  }
+}
+
+function addToHistory(original, short) {
+  shortHistory.unshift({ original, short });
+  const list = document.getElementById('short-history');
+  list.innerHTML = shortHistory.slice(0,8).map(item => `
+    <div class="url-item">
+      <div>
+        <div class="short"><a href="${item.short}" target="_blank">${item.short}</a></div>
+        <div class="original" title="${item.original}">${item.original}</div>
+      </div>
+      <button class="btn btn-secondary" style="padding:6px 12px;font-size:0.7rem;" onclick="navigator.clipboard.writeText('${item.short}')">Copy</button>
+    </div>
+  `).join('');
+}
+// ─── COUNTDOWN TIMER ───────────────────────────────────────────────────────
+let cdPreviewInterval = null;
+
+function cdGetConfig() {
+  return {
+    title:   document.getElementById('cd-title').value.trim(),
+    deadline: document.getElementById('cd-deadline').value,
+    tz:      document.getElementById('cd-tz').value,
+    style:   document.getElementById('cd-style').value,
+    color:   document.getElementById('cd-color').value,
+    labels:  document.getElementById('cd-labels').value,
+    expired: document.getElementById('cd-expired').value.trim() || 'Offer has ended.',
+    width:   document.getElementById('cd-width').value,
+  };
+}
+
+function cdBuildHTML(cfg, forEmbed) {
+  const id = forEmbed ? 'mkcd_' + Date.now() : 'cd_preview_timer';
+  const deadline = cfg.deadline ? new Date(cfg.deadline).toISOString() : '';
+
+  const palettes = {
+    dark:    { bg:'#13131a', border:'#2a2a3d', text:'#e2e8f0', sub:'#64748b', num:'#e2e8f0' },
+    light:   { bg:'#f8fafc', border:'#e2e8f0', text:'#0f172a', sub:'#94a3b8', num:'#0f172a' },
+    minimal: { bg:'transparent', border:'transparent', text:'#e2e8f0', sub:'#64748b', num:'#e2e8f0' },
+    accent:  { bg:'#13131a', border: cfg.color, text:'#e2e8f0', sub:'#64748b', num: cfg.color },
+  };
+  const p = palettes[cfg.style] || palettes.dark;
+  const showLabels = cfg.labels === 'yes';
+
+  const wrapStyle = `font-family:'DM Mono',monospace;background:${p.bg};border:1px solid ${p.border};border-radius:16px;padding:28px 24px;max-width:${cfg.width};box-sizing:border-box;text-align:center;`;
+  const titleStyle = `font-size:1rem;font-weight:600;color:${p.text};margin-bottom:20px;letter-spacing:0.02em;`;
+  const gridStyle = `display:flex;justify-content:center;gap:12px;flex-wrap:wrap;`;
+  const blockStyle = `display:flex;flex-direction:column;align-items:center;min-width:72px;`;
+  const numStyle = `font-size:2.4rem;font-weight:700;color:${p.num};line-height:1;letter-spacing:-1px;`;
+  const labelStyle = `font-size:0.65rem;color:${p.sub};letter-spacing:0.1em;text-transform:uppercase;margin-top:6px;`;
+  const sepStyle = `font-size:2rem;color:${p.sub};align-self:flex-start;padding-top:4px;`;
+  const expiredStyle = `font-size:1.1rem;color:${p.num};font-weight:600;`;
+
+  const labelParts = showLabels
+    ? `<div style="${blockStyle}"><span id="${id}_d" style="${numStyle}">00</span><span style="${labelStyle}">Days</span></div>
+       <span style="${sepStyle}">:</span>
+       <div style="${blockStyle}"><span id="${id}_h" style="${numStyle}">00</span><span style="${labelStyle}">Hours</span></div>
+       <span style="${sepStyle}">:</span>
+       <div style="${blockStyle}"><span id="${id}_m" style="${numStyle}">00</span><span style="${labelStyle}">Mins</span></div>
+       <span style="${sepStyle}">:</span>
+       <div style="${blockStyle}"><span id="${id}_s" style="${numStyle}">00</span><span style="${labelStyle}">Secs</span></div>`
+    : `<div style="${blockStyle}"><span id="${id}_d" style="${numStyle}">00</span></div>
+       <span style="${sepStyle}">:</span>
+       <div style="${blockStyle}"><span id="${id}_h" style="${numStyle}">00</span></div>
+       <span style="${sepStyle}">:</span>
+       <div style="${blockStyle}"><span id="${id}_m" style="${numStyle}">00</span></div>
+       <span style="${sepStyle}">:</span>
+       <div style="${blockStyle}"><span id="${id}_s" style="${numStyle}">00</span></div>`;
+
+  const titleHTML = cfg.title ? `<div style="${titleStyle}">${cfg.title}</div>` : '';
+
+  const html = `<div id="${id}_wrap" style="${wrapStyle}">
+  ${titleHTML}
+  <div id="${id}_grid" style="${gridStyle}">${labelParts}</div>
+  <div id="${id}_exp" style="${expiredStyle};display:none;">${cfg.expired}</div>
+</div>
+<script>
+(function(){
+  var deadline = new Date("${deadline}");
+  var tz = "${cfg.tz}";
+  function tick(){
+    var now = new Date();
+    var diff = deadline - now;
+    if(diff <= 0){
+      document.getElementById("${id}_grid").style.display="none";
+      document.getElementById("${id}_exp").style.display="block";
+      return;
+    }
+    var d=Math.floor(diff/86400000);
+    var h=Math.floor((diff%86400000)/3600000);
+    var m=Math.floor((diff%3600000)/60000);
+    var s=Math.floor((diff%60000)/1000);
+    document.getElementById("${id}_d").textContent=String(d).padStart(2,"0");
+    document.getElementById("${id}_h").textContent=String(h).padStart(2,"0");
+    document.getElementById("${id}_m").textContent=String(m).padStart(2,"0");
+    document.getElementById("${id}_s").textContent=String(s).padStart(2,"0");
+  }
+  tick(); setInterval(tick,1000);
+})();
+<\/script>`;
+
+  return html;
+}
+
+function cdLivePreview() {
+  const cfg = cdGetConfig();
+  const wrap = document.getElementById('cd-preview-wrap');
+  if (!cfg.deadline) {
+    wrap.innerHTML = '<div style="color:var(--muted);font-size:0.8rem;">Set a target date to see the preview.</div>';
+    return;
+  }
+  wrap.innerHTML = cdBuildHTML(cfg, false);
+  // restart the preview timer
+  const id = 'cd_preview_timer';
+  clearInterval(cdPreviewInterval);
+  cdPreviewInterval = setInterval(() => {
+    const now = new Date();
+    const deadline = new Date(cfg.deadline);
+    const diff = deadline - now;
+    if (diff <= 0) {
+      const g = document.getElementById(id+'_grid');
+      const e = document.getElementById(id+'_exp');
+      if (g) g.style.display = 'none';
+      if (e) e.style.display = 'block';
+      clearInterval(cdPreviewInterval);
+      return;
+    }
+    const pad = n => String(n).padStart(2,'0');
+    const el = s => document.getElementById(id+'_'+s);
+    if (el('d')) el('d').textContent = pad(Math.floor(diff/86400000));
+    if (el('h')) el('h').textContent = pad(Math.floor((diff%86400000)/3600000));
+    if (el('m')) el('m').textContent = pad(Math.floor((diff%3600000)/60000));
+    if (el('s')) el('s').textContent = pad(Math.floor((diff%60000)/1000));
+  }, 1000);
+}
+
+function cdGenerate() {
+  const cfg = cdGetConfig();
+  if (!cfg.deadline) { alert('Please set a target date & time.'); return; }
+  const embedHTML = cdBuildHTML(cfg, true);
+  const box = document.getElementById('cd-output');
+  const result = document.getElementById('cd-result');
+  box.classList.add('show');
+  result.textContent = embedHTML;
+}
+
+function cdCopyEmbed() {
+  const text = document.getElementById('cd-result').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const f = document.getElementById('cd-copied');
+    f.classList.add('show');
+    setTimeout(() => f.classList.remove('show'), 2000);
+  });
+}
+
+function cdDownload() {
+  const inner = document.getElementById('cd-result').textContent;
+  if (!inner) { alert('Generate the embed first.'); return; }
+  const full = `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Countdown Timer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body style="margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#0a0a0f;">
+${inner}
+</body></html>`;
+  const blob = new Blob([full], { type: 'text/html' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'countdown-timer.html';
+  a.click();
+}
+
+function cdReset() {
+  ['cd-title','cd-deadline','cd-expired'].forEach(id => document.getElementById(id).value = id === 'cd-expired' ? 'Offer has ended.' : '');
+  document.getElementById('cd-color').value = '#6ee7b7';
+  document.getElementById('cd-style').value = 'dark';
+  document.getElementById('cd-labels').value = 'yes';
+  document.getElementById('cd-width').value = '100%';
+  document.getElementById('cd-tz').value = 'local';
+  document.getElementById('cd-preview-wrap').innerHTML = '';
+  document.getElementById('cd-output').classList.remove('show');
+  clearInterval(cdPreviewInterval);
+}
+
+</body>
+</html>
