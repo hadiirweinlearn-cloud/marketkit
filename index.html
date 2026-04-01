@@ -6,6 +6,7 @@
 <title>MarketKit — One-Stop Marketing Tools</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <style>
   :root {
     --bg: #0a0a0f;
@@ -329,13 +330,15 @@
     <button class="tab" onclick="switchTab(event,'qr')">◼ QR Code</button>
     <button class="tab" onclick="switchTab(event,'short')">🔗 URL Shortener</button>
     <button class="tab" onclick="switchTab(event,'countdown')">⏱ Countdown</button>
+    <button class="tab" onclick="switchTab(event,'mailto')">✉ Mailto</button>
+    <button class="tab" onclick="switchTab(event,'lorem')">¶ Lorem Ipsum</button>
     <button class="tab" onclick="switchTab(event,'settings')">⚙ Settings</button>
   </div>
 
   <!-- UTM Builder -->
   <div id="panel-utm" class="panel active">
     <div class="section-title"><span class="dot"></span>UTM Link Builder</div>
-    <p class="section-desc">Build campaign tracking URLs for Google Analytics and other platforms.</p>
+    <p class="section-desc">Build campaign tracking URLs aligned with GA4 default channel groupings and UTM best practices.</p>
     <div class="card">
       <div class="form-grid">
         <div class="field form-full">
@@ -343,30 +346,35 @@
           <input type="url" id="utm-url" placeholder="https://yoursite.com/page">
         </div>
         <div class="field">
-          <label>utm_source *</label>
-          <input type="text" id="utm-source" placeholder="google, facebook, newsletter" list="utm-source-list">
+          <label>utm_source * <span style="color:var(--muted);font-size:0.65rem;">— the platform sending traffic</span></label>
+          <input type="text" id="utm-source" placeholder="facebook, google, newsletter" list="utm-source-list" oninput="this.value=applyCase(this.value)">
           <datalist id="utm-source-list"></datalist>
+          <span style="font-size:0.68rem;color:var(--muted);margin-top:4px;">e.g. facebook · google · mailchimp · newsletter · linkedin · twitter</span>
         </div>
         <div class="field">
-          <label>utm_medium *</label>
-          <input type="text" id="utm-medium" placeholder="cpc, email, social" list="utm-medium-list">
+          <label>utm_medium * <span style="color:var(--muted);font-size:0.65rem;">— the channel type</span></label>
+          <input type="text" id="utm-medium" placeholder="email, social, social-cpc" list="utm-medium-list" oninput="this.value=applyCase(this.value)">
           <datalist id="utm-medium-list"></datalist>
+          <span style="font-size:0.68rem;color:var(--muted);margin-top:4px;">e.g. email · social · social-cpc · cpc · display · referral · affiliate</span>
         </div>
         <div class="field">
-          <label>utm_campaign *</label>
-          <input type="text" id="utm-campaign" placeholder="spring_sale_2026">
+          <label>utm_campaign * <span style="color:var(--muted);font-size:0.65rem;">— initiative name, consistent across channels</span></label>
+          <input type="text" id="utm-campaign" placeholder="mothers-day-2026, es-winter-sale-2026" oninput="this.value=applyCase(this.value)">
+          <span style="font-size:0.68rem;color:var(--muted);margin-top:4px;">Tip: include country, year or product — e.g. sg-flash-sale-apr-2026</span>
         </div>
         <div class="field">
-          <label>utm_content</label>
-          <input type="text" id="utm-content" placeholder="banner_top, cta_button">
+          <label>utm_content <span style="color:var(--muted);font-size:0.65rem;">— distinguishes placement or creative</span></label>
+          <input type="text" id="utm-content" placeholder="header-cta, sidebar-ad, video-format" oninput="this.value=applyCase(this.value)">
+          <span style="font-size:0.68rem;color:var(--muted);margin-top:4px;">e.g. main-feed · banner · footer-button · win-free-trip-cta</span>
         </div>
         <div class="field">
-          <label>utm_term</label>
-          <input type="text" id="utm-term" placeholder="running+shoes">
+          <label>utm_term <span style="color:var(--muted);font-size:0.65rem;">— keyword or copy variant</span></label>
+          <input type="text" id="utm-term" placeholder="running-shoes, subject-line-a" oninput="this.value=applyCase(this.value)">
+          <span style="font-size:0.68rem;color:var(--muted);margin-top:4px;">Paid search keywords or A/B subject lines</span>
         </div>
         <div class="field">
-          <label>utm_id (GA4)</label>
-          <input type="text" id="utm-id" placeholder="campaign_id_123">
+          <label>utm_id <span style="color:var(--muted);font-size:0.65rem;">— GA4 campaign ID (optional)</span></label>
+          <input type="text" id="utm-id" placeholder="abc123">
         </div>
       </div>
       <div class="btn-row">
@@ -391,10 +399,48 @@
       <div class="section-title" style="font-size:1rem;margin-bottom:10px;">Quick Presets</div>
       <div>
         <span class="tag" style="cursor:pointer" onclick="applyPreset('google-cpc')">Google CPC</span>
-        <span class="tag" style="cursor:pointer" onclick="applyPreset('meta-paid')">Meta Paid</span>
+        <span class="tag" style="cursor:pointer" onclick="applyPreset('meta-paid')">Meta Paid Social</span>
+        <span class="tag" style="cursor:pointer" onclick="applyPreset('meta-organic')">Meta Organic</span>
         <span class="tag" style="cursor:pointer" onclick="applyPreset('email')">Email Campaign</span>
-        <span class="tag" style="cursor:pointer" onclick="applyPreset('linkedin')">LinkedIn</span>
-        <span class="tag" style="cursor:pointer" onclick="applyPreset('tiktok')">TikTok</span>
+        <span class="tag" style="cursor:pointer" onclick="applyPreset('linkedin-paid')">LinkedIn Paid</span>
+        <span class="tag" style="cursor:pointer" onclick="applyPreset('linkedin-organic')">LinkedIn Organic</span>
+        <span class="tag" style="cursor:pointer" onclick="applyPreset('tiktok')">TikTok Paid</span>
+        <span class="tag" style="cursor:pointer" onclick="applyPreset('affiliate')">Affiliate</span>
+        <span class="tag" style="cursor:pointer" onclick="applyPreset('display')">Display</span>
+        <span class="tag" style="cursor:pointer" onclick="applyPreset('referral')">Referral</span>
+      </div>
+    </div>
+
+    <!-- Best Practices card -->
+    <div class="card">
+      <div class="section-title" style="font-size:1rem;margin-bottom:12px;">✓ UTM Best Practices</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="background:var(--surface2);border-radius:8px;padding:12px 14px;border:1px solid var(--border);">
+          <div style="font-size:0.72rem;color:var(--accent);font-weight:500;margin-bottom:6px;">SOURCE</div>
+          <div style="font-size:0.72rem;color:var(--muted);line-height:1.7;">Platform or site sending traffic. Use "facebook" not "fb". Exclude ".com" from domains. Never put platform names in medium.</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px 14px;border:1px solid var(--border);">
+          <div style="font-size:0.72rem;color:var(--accent2);font-weight:500;margin-bottom:6px;">MEDIUM</div>
+          <div style="font-size:0.72rem;color:var(--muted);line-height:1.7;">Channel type — not the platform. "email" is always the medium for email; the source is your ESP. Align with GA4 default channel groupings.</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px 14px;border:1px solid var(--border);">
+          <div style="font-size:0.72rem;color:var(--accent3);font-weight:500;margin-bottom:6px;">CAMPAIGN</div>
+          <div style="font-size:0.72rem;color:var(--muted);line-height:1.7;">Same name across all channels for one initiative. Include geo, year, or product: sg-winter-sale-2026. Keep it short and readable.</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px 14px;border:1px solid var(--border);">
+          <div style="font-size:0.72rem;color:#fbbf24;font-weight:500;margin-bottom:6px;">CONTENT & TERM</div>
+          <div style="font-size:0.72rem;color:var(--muted);line-height:1.7;">Content = placement or creative variant. Term = paid keyword or subject line A/B test. Don't skip content — it's vital for A/B testing.</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:8px;padding:12px 14px;border:1px solid var(--border);grid-column:1/-1;">
+          <div style="font-size:0.72rem;color:#94a3b8;font-weight:500;margin-bottom:6px;">RULES TO FOLLOW</div>
+          <div style="font-size:0.72rem;color:var(--muted);line-height:1.8;">
+            ✓ Always lowercase · dashes between words (spring-sale not spring_sale or spring sale)<br>
+            ✓ Tag all email and paid social links — never rely on auto-tagging<br>
+            ✓ Never tag internal links — overwrites original attribution<br>
+            ✓ Don't repeat info across params (if source=facebook, don't add facebook to medium)<br>
+            ✓ Shorten long URLs before sharing publicly → use the URL Shortener tab
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -402,7 +448,7 @@
   <!-- Calendar Link -->
   <div id="panel-calendar" class="panel">
     <div class="section-title"><span class="dot" style="background:var(--accent2)"></span>Calendar Link Generator</div>
-    <p class="section-desc">Generate Google, Outlook & Apple Calendar add-to-calendar links.</p>
+    <p class="section-desc">Fill in the details once — get links for Google, Outlook, and Yahoo Calendar all at once.</p>
     <div class="card">
       <div class="form-grid">
         <div class="field form-full">
@@ -410,11 +456,11 @@
           <input type="text" id="cal-title" placeholder="Product Launch Webinar">
         </div>
         <div class="field">
-          <label>Start Date *</label>
+          <label>Start Date & Time *</label>
           <input type="datetime-local" id="cal-start">
         </div>
         <div class="field">
-          <label>End Date *</label>
+          <label>End Date & Time *</label>
           <input type="datetime-local" id="cal-end">
         </div>
         <div class="field form-full">
@@ -425,28 +471,100 @@
           <label>Description</label>
           <textarea id="cal-desc" placeholder="Join us for our quarterly webinar..."></textarea>
         </div>
-        <div class="field">
-          <label>Calendar Platform</label>
-          <select id="cal-platform">
-            <option value="google">Google Calendar</option>
-            <option value="outlook">Outlook / Office 365</option>
-            <option value="yahoo">Yahoo Calendar</option>
+        <div class="field form-full">
+          <label>Event Timezone *</label>
+          <select id="cal-tz">
+            <option value="Asia/Singapore">Asia/Singapore (SGT, UTC+8)</option>
+            <option value="Asia/Kuala_Lumpur">Asia/Kuala Lumpur (MYT, UTC+8)</option>
+            <option value="Asia/Jakarta">Asia/Jakarta (WIB, UTC+7)</option>
+            <option value="Asia/Bangkok">Asia/Bangkok (ICT, UTC+7)</option>
+            <option value="Asia/Manila">Asia/Manila (PHT, UTC+8)</option>
+            <option value="Asia/Hong_Kong">Asia/Hong Kong (HKT, UTC+8)</option>
+            <option value="Asia/Tokyo">Asia/Tokyo (JST, UTC+9)</option>
+            <option value="Asia/Seoul">Asia/Seoul (KST, UTC+9)</option>
+            <option value="Asia/Shanghai">Asia/Shanghai (CST, UTC+8)</option>
+            <option value="Asia/Dubai">Asia/Dubai (GST, UTC+4)</option>
+            <option value="Asia/Kolkata">Asia/Kolkata (IST, UTC+5:30)</option>
+            <option value="Europe/London">Europe/London (GMT/BST)</option>
+            <option value="Europe/Paris">Europe/Paris (CET/CEST)</option>
+            <option value="Europe/Berlin">Europe/Berlin (CET/CEST)</option>
+            <option value="America/New_York">America/New_York (EST/EDT)</option>
+            <option value="America/Chicago">America/Chicago (CST/CDT)</option>
+            <option value="America/Los_Angeles">America/Los_Angeles (PST/PDT)</option>
+            <option value="America/Sao_Paulo">America/Sao Paulo (BRT)</option>
+            <option value="Australia/Sydney">Australia/Sydney (AEST/AEDT)</option>
+            <option value="Pacific/Auckland">Pacific/Auckland (NZST/NZDT)</option>
+            <option value="UTC">UTC</option>
           </select>
         </div>
       </div>
       <div class="btn-row">
-        <button class="btn btn-primary" onclick="buildCalendar()">Generate Link</button>
+        <button class="btn btn-primary" onclick="buildCalendar()">Generate All Links</button>
         <span class="copied-flash" id="cal-copied">✓ Copied!</span>
       </div>
+
+      <!-- All-platform output -->
       <div class="output-box" id="cal-output">
-        <div class="output-label">Calendar Link</div>
-        <div class="output-url" id="cal-result"></div>
-        <div class="divider"></div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="btn btn-secondary" onclick="copyText('cal-result','cal-copied')">Copy Link</button>
-          <button class="btn btn-secondary" onclick="sendToQR('cal')">→ Make QR</button>
-          <button class="btn btn-secondary" onclick="sendToShortener('cal')">→ Shorten</button>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <!-- Google -->
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+              <div style="font-size:0.7rem;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;font-weight:500;">Google Calendar</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn btn-secondary" style="padding:5px 12px;font-size:0.7rem;" onclick="copyCal('cal-google')">Copy</button>
+                <button class="btn btn-secondary" style="padding:5px 12px;font-size:0.7rem;" onclick="sendToQR('cal-google')">→ QR</button>
+                <button class="btn btn-secondary" style="padding:5px 12px;font-size:0.7rem;" onclick="sendCalToShortener('cal-google')">→ Shorten</button>
+                <a id="cal-google-open" href="#" target="_blank" class="btn btn-secondary" style="padding:5px 12px;font-size:0.7rem;text-decoration:none;">Open ↗</a>
+              </div>
+            </div>
+            <div id="cal-google" style="word-break:break-all;font-size:0.75rem;color:var(--muted);line-height:1.6;"></div>
+          </div>
+
+          <!-- Outlook Live -->
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+              <div style="font-size:0.7rem;color:var(--accent2);letter-spacing:0.1em;text-transform:uppercase;font-weight:500;">Outlook Live (personal)</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn btn-secondary" style="padding:5px 12px;font-size:0.7rem;" onclick="copyCal('cal-outlook')">Copy</button>
+                <button class="btn btn-secondary" style="padding:5px 12px;font-size:0.7rem;" onclick="sendToQR('cal-outlook')">→ QR</button>
+                <button class="btn btn-secondary" style="padding:5px 12px;font-size:0.7rem;" onclick="sendCalToShortener('cal-outlook')">→ Shorten</button>
+                <a id="cal-outlook-open" href="#" target="_blank" class="btn btn-secondary" style="padding:5px 12px;font-size:0.7rem;text-decoration:none;">Open ↗</a>
+              </div>
+            </div>
+            <div id="cal-outlook" style="word-break:break-all;font-size:0.75rem;color:var(--muted);line-height:1.6;"></div>
+          </div>
+
+          <!-- Office 365 -->
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+              <div style="font-size:0.7rem;color:var(--accent2);letter-spacing:0.1em;text-transform:uppercase;font-weight:500;">Office 365 / Outlook Work</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn btn-secondary" style="padding:5px 12px;font-size:0.7rem;" onclick="copyCal('cal-o365')">Copy</button>
+                <button class="btn btn-secondary" style="padding:5px 12px;font-size:0.7rem;" onclick="sendToQR('cal-o365')">→ QR</button>
+                <button class="btn btn-secondary" style="padding:5px 12px;font-size:0.7rem;" onclick="sendCalToShortener('cal-o365')">→ Shorten</button>
+                <a id="cal-o365-open" href="#" target="_blank" class="btn btn-secondary" style="padding:5px 12px;font-size:0.7rem;text-decoration:none;">Open ↗</a>
+              </div>
+            </div>
+            <div id="cal-o365" style="word-break:break-all;font-size:0.75rem;color:var(--muted);line-height:1.6;"></div>
+          </div>
+
+          <!-- Yahoo -->
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+              <div style="font-size:0.7rem;color:var(--accent3);letter-spacing:0.1em;text-transform:uppercase;font-weight:500;">Yahoo Calendar</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn btn-secondary" style="padding:5px 12px;font-size:0.7rem;" onclick="copyCal('cal-yahoo')">Copy</button>
+                <button class="btn btn-secondary" style="padding:5px 12px;font-size:0.7rem;" onclick="sendToQR('cal-yahoo')">→ QR</button>
+                <button class="btn btn-secondary" style="padding:5px 12px;font-size:0.7rem;" onclick="sendCalToShortener('cal-yahoo')">→ Shorten</button>
+                <a id="cal-yahoo-open" href="#" target="_blank" class="btn btn-secondary" style="padding:5px 12px;font-size:0.7rem;text-decoration:none;">Open ↗</a>
+              </div>
+            </div>
+            <div id="cal-yahoo" style="word-break:break-all;font-size:0.75rem;color:var(--muted);line-height:1.6;"></div>
+          </div>
+
         </div>
+        <div style="margin-top:14px;font-size:0.7rem;color:var(--muted);">📍 Timezone: <span id="cal-tz-label" style="color:var(--text);"></span></div>
       </div>
     </div>
   </div>
@@ -486,6 +604,32 @@
           <input type="email" id="ics-email" placeholder="team@company.com">
         </div>
         <div class="field">
+          <label>Event Timezone *</label>
+          <select id="ics-tz">
+            <option value="Asia/Singapore">Asia/Singapore (SGT, UTC+8)</option>
+            <option value="Asia/Kuala_Lumpur">Asia/Kuala Lumpur (MYT, UTC+8)</option>
+            <option value="Asia/Jakarta">Asia/Jakarta (WIB, UTC+7)</option>
+            <option value="Asia/Bangkok">Asia/Bangkok (ICT, UTC+7)</option>
+            <option value="Asia/Manila">Asia/Manila (PHT, UTC+8)</option>
+            <option value="Asia/Hong_Kong">Asia/Hong Kong (HKT, UTC+8)</option>
+            <option value="Asia/Tokyo">Asia/Tokyo (JST, UTC+9)</option>
+            <option value="Asia/Seoul">Asia/Seoul (KST, UTC+9)</option>
+            <option value="Asia/Shanghai">Asia/Shanghai (CST, UTC+8)</option>
+            <option value="Asia/Dubai">Asia/Dubai (GST, UTC+4)</option>
+            <option value="Asia/Kolkata">Asia/Kolkata (IST, UTC+5:30)</option>
+            <option value="Europe/London">Europe/London (GMT/BST)</option>
+            <option value="Europe/Paris">Europe/Paris (CET/CEST)</option>
+            <option value="Europe/Berlin">Europe/Berlin (CET/CEST)</option>
+            <option value="America/New_York">America/New_York (EST/EDT)</option>
+            <option value="America/Chicago">America/Chicago (CST/CDT)</option>
+            <option value="America/Los_Angeles">America/Los_Angeles (PST/PDT)</option>
+            <option value="America/Sao_Paulo">America/Sao Paulo (BRT)</option>
+            <option value="Australia/Sydney">Australia/Sydney (AEST/AEDT)</option>
+            <option value="Pacific/Auckland">Pacific/Auckland (NZST/NZDT)</option>
+            <option value="UTC">UTC</option>
+          </select>
+        </div>
+        <div class="field">
           <label>Reminder (minutes before)</label>
           <select id="ics-reminder">
             <option value="0">No reminder</option>
@@ -523,50 +667,110 @@
   <!-- QR Code -->
   <div id="panel-qr" class="panel">
     <div class="section-title"><span class="dot" style="background:#fbbf24"></span>QR Code Generator</div>
-    <p class="section-desc">Generate QR codes for URLs, text, vCards, and more.</p>
+    <p class="section-desc">Generate customised QR codes with rounded modules, finder pattern styles, and colour options.</p>
     <div class="card">
       <div class="form-grid">
         <div class="field form-full">
           <label>Content *</label>
           <textarea id="qr-content" placeholder="https://yoursite.com or any text, email, phone..."></textarea>
         </div>
+
+        <!-- Data module style -->
         <div class="field">
-          <label>QR Size (px)</label>
-          <select id="qr-size">
-            <option value="128">128 × 128</option>
-            <option value="200">200 × 200</option>
-            <option value="256" selected>256 × 256</option>
-            <option value="400">400 × 400</option>
-            <option value="512">512 × 512</option>
+          <label>Data Module Style</label>
+          <select id="qr-module-style">
+            <option value="square">Square (right angle)</option>
+            <option value="rounded">Rounded corners</option>
+            <option value="dot" selected>Dot / circle</option>
           </select>
         </div>
+
+        <!-- Finder pattern outer -->
+        <div class="field">
+          <label>Finder Pattern — Outer Frame</label>
+          <select id="qr-finder-outer">
+            <option value="square">Square</option>
+            <option value="rounded" selected>Rounded</option>
+            <option value="circle">Circle</option>
+          </select>
+        </div>
+
+        <!-- Finder pattern inner -->
+        <div class="field">
+          <label>Finder Pattern — Inner Dot</label>
+          <select id="qr-finder-inner">
+            <option value="square" selected>Square</option>
+            <option value="rounded">Rounded</option>
+            <option value="circle">Circle</option>
+          </select>
+        </div>
+
+        <!-- Error correction -->
         <div class="field">
           <label>Error Correction</label>
           <select id="qr-ec">
-            <option value="L">Low (L)</option>
-            <option value="M" selected>Medium (M)</option>
-            <option value="Q">Quartile (Q)</option>
-            <option value="H">High (H)</option>
+            <option value="L">Low (L) — 7%</option>
+            <option value="M" selected>Medium (M) — 15%</option>
+            <option value="Q">Quartile (Q) — 25%</option>
+            <option value="H">High (H) — 30%</option>
           </select>
         </div>
+
+        <!-- Size -->
+        <div class="field">
+          <label>QR Size (px)</label>
+          <select id="qr-size">
+            <option value="200" selected>200 × 200</option>
+            <option value="300">300 × 300</option>
+            <option value="400">400 × 400</option>
+            <option value="500">500 × 500</option>
+            <option value="600">600 × 600</option>
+            <option value="800">800 × 800</option>
+            <option value="1000">1000 × 1000</option>
+          </select>
+        </div>
+
+        <!-- Outer margin -->
+        <div class="field">
+          <label>Outer Margin (px)</label>
+          <select id="qr-margin">
+            <option value="0">0 px</option>
+            <option value="5">5 px</option>
+            <option value="10">10 px</option>
+            <option value="15" selected>15 px</option>
+            <option value="20">20 px</option>
+            <option value="25">25 px</option>
+            <option value="30">30 px</option>
+          </select>
+        </div>
+
+        <!-- Dark color -->
         <div class="field">
           <label>Dark Color</label>
           <input type="color" id="qr-dark" value="#000000" style="height:42px;cursor:pointer;">
         </div>
+
+        <!-- Light color -->
         <div class="field">
-          <label>Light Color</label>
+          <label>Light / Background Color</label>
           <input type="color" id="qr-light" value="#ffffff" style="height:42px;cursor:pointer;">
         </div>
+
+        <!-- Finder color override -->
+        <div class="field">
+          <label>Finder Pattern Color</label>
+          <input type="color" id="qr-finder-color" value="#000000" style="height:42px;cursor:pointer;">
+        </div>
+
       </div>
       <div class="btn-row">
         <button class="btn btn-primary" onclick="generateQR()">Generate QR Code</button>
-        <button class="btn btn-secondary" onclick="document.getElementById('qr-content').value=''">Clear</button>
+        <button class="btn btn-secondary" onclick="clearQR()">Clear</button>
       </div>
       <div id="qr-output">
-        <div id="qr-canvas"></div>
+        <canvas id="qr-canvas" style="border-radius:8px;max-width:100%;"></canvas>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
           <button class="btn btn-primary" onclick="downloadQR()">Download PNG</button>
-          <button class="btn btn-secondary" onclick="downloadQRSVG()">Download SVG</button>
         </div>
       </div>
     </div>
@@ -706,6 +910,109 @@
     </div>
   </div>
 
+  <!-- Mailto Builder -->
+  <div id="panel-mailto" class="panel">
+    <div class="section-title"><span class="dot" style="background:#38bdf8"></span>Mailto Link Builder</div>
+    <p class="section-desc">Generate a pre-filled mailto: link for email buttons, signatures, and landing pages.</p>
+    <div class="card">
+      <div class="form-grid">
+        <div class="field form-full">
+          <label>To * <span style="color:var(--muted);font-size:0.65rem;">— recipient email(s), comma-separated</span></label>
+          <input type="text" id="ml-to" placeholder="john@example.com, jane@example.com">
+        </div>
+        <div class="field">
+          <label>Cc <span style="color:var(--muted);font-size:0.65rem;">— comma-separated</span></label>
+          <input type="text" id="ml-cc" placeholder="manager@example.com">
+        </div>
+        <div class="field">
+          <label>Bcc <span style="color:var(--muted);font-size:0.65rem;">— comma-separated</span></label>
+          <input type="text" id="ml-bcc" placeholder="archive@example.com">
+        </div>
+        <div class="field form-full">
+          <label>Subject</label>
+          <input type="text" id="ml-subject" placeholder="Interested in your services">
+        </div>
+        <div class="field form-full">
+          <label>Body</label>
+          <textarea id="ml-body" rows="5" placeholder="Hi there,&#10;&#10;I wanted to reach out about..."></textarea>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="buildMailto()">Generate Mailto Link</button>
+        <button class="btn btn-secondary" onclick="clearMailto()">Clear</button>
+        <span class="copied-flash" id="ml-copied">✓ Copied!</span>
+      </div>
+      <div class="output-box" id="ml-output">
+        <div class="output-label">Mailto Link</div>
+        <div class="output-url" id="ml-result" style="word-break:break-all;font-size:0.78rem;line-height:1.6;"></div>
+        <div class="divider"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-secondary" onclick="copyMailto()">Copy Link</button>
+          <a id="ml-test-link" href="#" class="btn btn-secondary" style="text-decoration:none;">Test — Open in Mail ↗</a>
+        </div>
+      </div>
+      <div class="note" style="margin-top:12px;">💡 Paste the mailto: link into an HTML anchor tag: <span style="color:var(--accent);font-size:0.7rem;">&lt;a href="mailto:..."&gt;Contact us&lt;/a&gt;</span></div>
+    </div>
+  </div>
+
+  <!-- Lorem Ipsum Generator -->
+  <div id="panel-lorem" class="panel">
+    <div class="section-title"><span class="dot" style="background:#a78bfa"></span>Lorem Ipsum Generator</div>
+    <p class="section-desc">Generate placeholder text for mockups, templates, and designs.</p>
+    <div class="card">
+      <div class="form-grid">
+        <div class="field">
+          <label>Number of Paragraphs</label>
+          <select id="lorem-count">
+            <option value="1">1 paragraph</option>
+            <option value="2">2 paragraphs</option>
+            <option value="3" selected>3 paragraphs</option>
+            <option value="5">5 paragraphs</option>
+            <option value="10">10 paragraphs</option>
+            <option value="20">20 paragraphs</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Style</label>
+          <select id="lorem-style">
+            <option value="classic">Classic Lorem Ipsum</option>
+            <option value="random">Randomised Latin</option>
+            <option value="marketing">Marketing / business tone</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Start with "Lorem ipsum..."</label>
+          <select id="lorem-start">
+            <option value="yes">Yes</option>
+            <option value="no">No — start random</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Format</label>
+          <select id="lorem-format">
+            <option value="plain">Plain text</option>
+            <option value="html">HTML &lt;p&gt; tags</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="generateLorem()">Generate</button>
+        <button class="btn btn-secondary" onclick="generateLorem()">↺ Regenerate</button>
+        <span class="copied-flash" id="lorem-copied">✓ Copied!</span>
+      </div>
+      <div class="output-box show" id="lorem-output" style="display:block;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+          <div class="output-label" style="margin:0;">Generated Text</div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-secondary" style="padding:5px 12px;font-size:0.7rem;" onclick="copyLorem()">Copy All</button>
+            <span id="lorem-wordcount" style="font-size:0.7rem;color:var(--muted);align-self:center;"></span>
+          </div>
+        </div>
+        <div id="lorem-result" style="font-size:0.8rem;line-height:1.8;color:var(--text);white-space:pre-wrap;"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Settings -->
   <div id="panel-settings" class="panel">
     <div class="section-title"><span class="dot" style="background:#94a3b8"></span>Settings & Preferences</div>
@@ -725,51 +1032,16 @@
       <p class="section-desc" style="margin-bottom:16px;">Appear as suggestions in the utm_medium field. One per line.</p>
       <div class="field">
         <label>Medium list</label>
-        <textarea id="settings-mediums" rows="8" placeholder="cpc&#10;email&#10;social&#10;organic&#10;paid_social&#10;display&#10;affiliate&#10;referral&#10;sms"></textarea>
+        <textarea id="settings-mediums" rows="8" placeholder="email&#10;cpc&#10;social&#10;social-cpc&#10;display&#10;referral&#10;affiliate&#10;video&#10;push&#10;sms&#10;qr&#10;direct"></textarea>
       </div>
     </div>
 
     <div class="card">
       <div class="section-title" style="font-size:1rem;margin-bottom:4px;">UTM Campaigns</div>
-      <p class="section-desc" style="margin-bottom:16px;">Saved campaign names for quick reuse. One per line.</p>
+      <p class="section-desc" style="margin-bottom:16px;">Saved campaign names for quick reuse. One per line. Use lowercase kebab-case: sg-flash-sale-apr-2026</p>
       <div class="field">
         <label>Campaign list</label>
-        <textarea id="settings-campaigns" rows="6" placeholder="brand_awareness_q1&#10;retargeting_q2&#10;product_launch_2026&#10;flash_sale_apr"></textarea>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="section-title" style="font-size:1rem;margin-bottom:4px;">Naming Convention</div>
-      <p class="section-desc" style="margin-bottom:16px;">Enforce a consistent format. Applied automatically when generating links.</p>
-      <div class="form-grid">
-        <div class="field">
-          <label>Case format</label>
-          <select id="settings-case">
-            <option value="none">No enforcement</option>
-            <option value="lower">lowercase only</option>
-            <option value="snake">snake_case</option>
-            <option value="kebab">kebab-case</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Default Base URL</label>
-          <input type="url" id="settings-baseurl" placeholder="https://yoursite.com">
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="section-title" style="font-size:1rem;margin-bottom:4px;">Branding</div>
-      <p class="section-desc" style="margin-bottom:16px;">Personalise the toolkit header name and tagline.</p>
-      <div class="form-grid">
-        <div class="field">
-          <label>Tool name</label>
-          <input type="text" id="settings-toolname" placeholder="MarketKit" maxlength="30">
-        </div>
-        <div class="field">
-          <label>Tagline</label>
-          <input type="text" id="settings-tagline" placeholder="One-stop marketing toolkit" maxlength="80">
-        </div>
+        <textarea id="settings-campaigns" rows="6" placeholder="sg-brand-awareness-q1-2026&#10;sg-retargeting-q2-2026&#10;product-launch-2026&#10;flash-sale-apr-2026"></textarea>
       </div>
     </div>
 
@@ -794,13 +1066,9 @@ function switchTab(event, name) {
 
 // ─── SETTINGS ──────────────────────────────────────────────────────────────
 const SETTINGS_DEFAULTS = {
-  sources:   'google\nfacebook\ninstagram\nlinkedin\ntiktok\nnewsletter\ntwitter\nyoutube\nbing\npinterest',
-  mediums:   'cpc\nemail\nsocial\norganic\npaid_social\ndisplay\naffiliate\nreferral\nsms\npush',
+  sources:   'google\nbing\nfacebook\ninstagram\nlinkedin\ntiktok\ntwitter\nyoutube\npinterest\nnewsletter\nmailchimp\nactivecampaign\nhubspot\npartner',
+  mediums:   'email\ncpc\nsocial\nsocial-cpc\ndisplay\nreferral\naffiliate\nvideo\npush\nsms\nqr\ndirect',
   campaigns: '',
-  caseFormat: 'none',
-  baseurl:   '',
-  toolname:  '',
-  tagline:   '',
 };
 
 function loadSettings() {
@@ -810,26 +1078,23 @@ function loadSettings() {
 
 function applySettingsToUI() {
   const s = loadSettings();
-  // Populate settings form
-  document.getElementById('settings-sources').value   = s.sources;
-  document.getElementById('settings-mediums').value   = s.mediums;
-  document.getElementById('settings-campaigns').value = s.campaigns;
-  document.getElementById('settings-case').value      = s.caseFormat;
-  document.getElementById('settings-baseurl').value   = s.baseurl;
-  document.getElementById('settings-toolname').value  = s.toolname;
-  document.getElementById('settings-tagline').value   = s.tagline;
+
+  // Populate settings form — guard each field in case panel isn't rendered yet
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+  set('settings-sources',   s.sources);
+  set('settings-mediums',   s.mediums);
+  set('settings-campaigns', s.campaigns);
 
   // Populate datalists for UTM form
   const srcList = document.getElementById('utm-source-list');
   const medList = document.getElementById('utm-medium-list');
-  const camList = document.getElementById('utm-campaign') && document.getElementById('utm-campaign-list');
 
-  srcList.innerHTML = s.sources.split('\n').filter(Boolean)
+  if (srcList) srcList.innerHTML = s.sources.split('\n').filter(Boolean)
     .map(v => `<option value="${v.trim()}">`).join('');
-  medList.innerHTML = s.mediums.split('\n').filter(Boolean)
+  if (medList) medList.innerHTML = s.mediums.split('\n').filter(Boolean)
     .map(v => `<option value="${v.trim()}">`).join('');
 
-  // Campaign datalist (add if not yet present)
+  // Campaign datalist — create if not yet present
   let camDatalist = document.getElementById('utm-campaign-list');
   if (!camDatalist) {
     camDatalist = document.createElement('datalist');
@@ -840,50 +1105,33 @@ function applySettingsToUI() {
   }
   camDatalist.innerHTML = s.campaigns.split('\n').filter(Boolean)
     .map(v => `<option value="${v.trim()}">`).join('');
-
-  // Pre-fill base URL if set
-  if (s.baseurl) {
-    const urlInput = document.getElementById('utm-url');
-    if (!urlInput.value) urlInput.value = s.baseurl;
-  }
-
-  // Branding
-  if (s.toolname) document.querySelector('.logo').textContent = s.toolname;
-  if (s.tagline)  document.querySelector('header p').textContent = s.tagline;
 }
 
 function saveSettings() {
+  const get = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
   const s = {
-    sources:   document.getElementById('settings-sources').value,
-    mediums:   document.getElementById('settings-mediums').value,
-    campaigns: document.getElementById('settings-campaigns').value,
-    caseFormat: document.getElementById('settings-case').value,
-    baseurl:   document.getElementById('settings-baseurl').value,
-    toolname:  document.getElementById('settings-toolname').value,
-    tagline:   document.getElementById('settings-tagline').value,
+    sources:   get('settings-sources'),
+    mediums:   get('settings-mediums'),
+    campaigns: get('settings-campaigns'),
   };
   localStorage.setItem('mkSettings', JSON.stringify(s));
   applySettingsToUI();
   const flash = document.getElementById('settings-saved');
-  flash.classList.add('show');
-  setTimeout(() => flash.classList.remove('show'), 2000);
+  if (flash) {
+    flash.classList.add('show');
+    setTimeout(() => flash.classList.remove('show'), 2000);
+  }
 }
 
 function resetSettings() {
   if (!confirm('Reset all settings to defaults?')) return;
   localStorage.removeItem('mkSettings');
   applySettingsToUI();
-  // Restore branding
-  document.querySelector('.logo').textContent = 'MarketKit';
-  document.querySelector('header p').textContent = 'One-stop marketing link toolkit · UTM · Calendar · ICS · QR · Short URLs · Countdown';
 }
 
 function applyCase(val) {
-  const s = loadSettings();
-  if (s.caseFormat === 'lower') return val.toLowerCase();
-  if (s.caseFormat === 'snake') return val.toLowerCase().replace(/[\s\-]+/g, '_');
-  if (s.caseFormat === 'kebab') return val.toLowerCase().replace(/[\s_]+/g, '-');
-  return val;
+  // Always force lowercase kebab-case regardless of settings
+  return val.toLowerCase().replace(/[\s_]+/g, '-').replace(/[^a-z0-9\-\.]/g, '');
 }
 
 // ─── UTILITIES ─────────────────────────────────────────────────────────────
@@ -908,9 +1156,12 @@ function showOutput(id, content, isHTML = false) {
 function sendToQR(source) {
   let content = '';
   if (source === 'utm') content = document.getElementById('utm-result').textContent;
-  else if (source === 'cal') content = document.getElementById('cal-result').textContent;
+  else if (source === 'cal') content = document.getElementById('cal-google').textContent;
+  else if (source === 'cal-google') content = document.getElementById('cal-google').textContent;
+  else if (source === 'cal-outlook') content = document.getElementById('cal-outlook').textContent;
+  else if (source === 'cal-yahoo') content = document.getElementById('cal-yahoo').textContent;
   else if (source === 'short') content = document.getElementById('short-result').textContent;
-  
+
   document.getElementById('qr-content').value = content;
   document.querySelectorAll('.tab')[3].click();
   setTimeout(generateQR, 100);
@@ -919,8 +1170,7 @@ function sendToQR(source) {
 function sendToShortener(source) {
   let url = '';
   if (source === 'utm') url = document.getElementById('utm-result').textContent;
-  else if (source === 'cal') url = document.getElementById('cal-result').textContent;
-  
+  else if (source === 'cal') url = document.getElementById('cal-google').textContent;
   document.getElementById('short-url').value = url;
   document.querySelectorAll('.tab')[4].click();
 }
@@ -957,65 +1207,189 @@ function clearUTM() {
 
 function applyPreset(preset) {
   const presets = {
-    'google-cpc': { source:'google', medium:'cpc', campaign:'', content:'', term:'' },
-    'meta-paid':  { source:'facebook', medium:'paid_social', campaign:'', content:'', term:'' },
-    'email':      { source:'newsletter', medium:'email', campaign:'', content:'', term:'' },
-    'linkedin':   { source:'linkedin', medium:'paid_social', campaign:'', content:'', term:'' },
-    'tiktok':     { source:'tiktok', medium:'paid_social', campaign:'', content:'', term:'' },
+    'google-cpc':       { source:'google',         medium:'cpc',        campaign:'', content:'', term:'' },
+    'meta-paid':        { source:'facebook',        medium:'social-cpc', campaign:'', content:'', term:'' },
+    'meta-organic':     { source:'facebook',        medium:'social',     campaign:'', content:'', term:'' },
+    'email':            { source:'newsletter',      medium:'email',      campaign:'', content:'', term:'' },
+    'linkedin-paid':    { source:'linkedin',        medium:'social-cpc', campaign:'', content:'', term:'' },
+    'linkedin-organic': { source:'linkedin',        medium:'social',     campaign:'', content:'', term:'' },
+    'tiktok':           { source:'tiktok',          medium:'social-cpc', campaign:'', content:'', term:'' },
+    'affiliate':        { source:'partner',         medium:'affiliate',  campaign:'', content:'', term:'' },
+    'display':          { source:'google',          medium:'display',    campaign:'', content:'', term:'' },
+    'referral':         { source:'',                medium:'referral',   campaign:'', content:'', term:'' },
   };
   const p = presets[preset];
-  Object.entries(p).forEach(([k,v]) => document.getElementById('utm-'+k).value = v);
+  if (!p) return;
+  Object.entries(p).forEach(([k,v]) => {
+    const el = document.getElementById('utm-'+k);
+    if (el) el.value = v;
+  });
+}
+
+// ─── TIMEZONE HELPERS ──────────────────────────────────────────────────────
+// Core principle: convert "wall clock time in tzName" → UTC Date reliably.
+// Strategy: use Intl to find what UTC offset tzName has at the given wall time,
+// then subtract that offset. We iterate once to handle DST edge cases.
+
+function wallClockToUTC(dtLocal, tzName) {
+  // dtLocal = "2026-04-01T22:00" (no timezone info — treat as wall clock in tzName)
+  // Step 1: naively assume it's UTC to get a starting Date object
+  const naive = new Date(dtLocal + ':00Z');
+
+  // Step 2: ask Intl what wall-clock time tzName shows for this UTC instant
+  function tzWall(utcDate) {
+    const parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: tzName,
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit',
+      hour12: false
+    }).formatToParts(utcDate).reduce((a, p) => { a[p.type] = p.value; return a; }, {});
+    // Normalise hour 24 → 0 (some browsers return "24" at midnight)
+    const h = parts.hour === '24' ? '00' : parts.hour;
+    return new Date(`${parts.year}-${parts.month}-${parts.day}T${h}:${parts.minute}:${parts.second}Z`);
+  }
+
+  // Step 3: compute offset and correct (one iteration handles 99.9% of DST cases)
+  const wall1   = tzWall(naive);
+  const offset1 = naive - wall1;                    // ms
+  const guess1  = new Date(naive.getTime() + offset1);
+
+  // Step 4: one more pass to catch the rare DST fold/gap
+  const wall2   = tzWall(guess1);
+  const offset2 = naive - wall2;
+  const guess2  = new Date(naive.getTime() + offset2);
+
+  return guess2;
+}
+
+// Format UTC Date → "20260401T140000Z" (Google / Yahoo calendar format)
+function toUTCCompact(utcDate) {
+  return utcDate.toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+}
+
+// Format UTC Date → ISO 8601 with explicit UTC offset for Outlook
+// Outlook requires the offset in the URL, not bare Z, to display correctly
+function toOffsetISO(dtLocal, tzName) {
+  const utc = wallClockToUTC(dtLocal, tzName);
+  // Derive the UTC offset by formatting the UTC instant in tzName
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: tzName,
+    year:'numeric', month:'2-digit', day:'2-digit',
+    hour:'2-digit', minute:'2-digit', second:'2-digit',
+    hour12: false
+  }).formatToParts(utc).reduce((a,p) => { a[p.type]=p.value; return a; }, {});
+  const h = parts.hour === '24' ? '00' : parts.hour;
+  const wallFromUTC = new Date(`${parts.year}-${parts.month}-${parts.day}T${h}:${parts.minute}:${parts.second}Z`);
+  const offsetMs    = wallFromUTC - utc;
+  const sign        = offsetMs >= 0 ? '+' : '-';
+  const absMin      = Math.abs(offsetMs) / 60000;
+  const offH        = String(Math.floor(absMin / 60)).padStart(2,'0');
+  const offM        = String(Math.abs(absMin % 60)).padStart(2,'0');
+  return `${parts.year}-${parts.month}-${parts.day}T${h}:${parts.minute}:${parts.second}${sign}${offH}:${offM}`;
+}
+
+// Format wall-clock datetime → ICS local format "20260401T220000"
+function toICSLocal(dtLocal) {
+  // dtLocal = "2026-04-01T22:00"
+  return dtLocal.replace(/-/g,'').replace(':','').replace('T','T') + '00';
+}
+
+// Auto-detect browser timezone and pre-select in dropdowns
+function detectAndSetTimezone() {
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  ['cal-tz','ics-tz'].forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    for (let opt of sel.options) {
+      if (opt.value === tz) { sel.value = tz; return; }
+    }
+    // Fallback: match by region prefix
+    const region = tz.split('/')[0];
+    for (let opt of sel.options) {
+      if (opt.value.startsWith(region)) { sel.value = opt.value; return; }
+    }
+  });
 }
 
 // ─── CALENDAR LINK ─────────────────────────────────────────────────────────
-function toUTCCalStr(dtLocal) {
-  const d = new Date(dtLocal);
-  return d.toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
-}
-
 function buildCalendar() {
-  const title = document.getElementById('cal-title').value.trim();
-  const start = document.getElementById('cal-start').value;
-  const end = document.getElementById('cal-end').value;
-  const platform = document.getElementById('cal-platform').value;
+  const title    = document.getElementById('cal-title').value.trim();
+  const start    = document.getElementById('cal-start').value;
+  const end      = document.getElementById('cal-end').value;
+  const tzName   = document.getElementById('cal-tz').value;
   const location = encodeURIComponent(document.getElementById('cal-location').value.trim());
-  const desc = encodeURIComponent(document.getElementById('cal-desc').value.trim());
+  const desc     = encodeURIComponent(document.getElementById('cal-desc').value.trim());
 
   if (!title || !start || !end) { alert('Title, start and end date are required'); return; }
 
-  const startUTC = toUTCCalStr(start);
-  const endUTC = toUTCCalStr(end);
   const encTitle = encodeURIComponent(title);
+  const encTZ    = encodeURIComponent(tzName);
 
-  let url = '';
-  if (platform === 'google') {
-    url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encTitle}&dates=${startUTC}/${endUTC}&details=${desc}&location=${location}`;
-  } else if (platform === 'outlook') {
-    const startISO = new Date(start).toISOString();
-    const endISO = new Date(end).toISOString();
-    url = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encTitle}&startdt=${encodeURIComponent(startISO)}&enddt=${encodeURIComponent(endISO)}&body=${desc}&location=${location}`;
-  } else if (platform === 'yahoo') {
-    url = `https://calendar.yahoo.com/?v=60&title=${encTitle}&st=${startUTC}&et=${endUTC}&desc=${desc}&in_loc=${location}`;
-  }
+  // Convert wall-clock → UTC for Google and Yahoo
+  const startUTC = toUTCCompact(wallClockToUTC(start, tzName));
+  const endUTC   = toUTCCompact(wallClockToUTC(end, tzName));
 
-  showOutput('cal', url, true);
-  document.getElementById('cal-result').innerHTML = `<a href="${url}" target="_blank">${url}</a>`;
+  // For Outlook: ISO with explicit offset so it shows the right local time
+  const startOL  = encodeURIComponent(toOffsetISO(start, tzName));
+  const endOL    = encodeURIComponent(toOffsetISO(end, tzName));
+
+  // Google Calendar:
+  //   dates=YYYYMMDDTHHMMSSZ/YYYYMMDDTHHMMSSZ  (UTC) + ctz=IANA_tz
+  //   The ctz param tells Google which timezone to DISPLAY the event in.
+  //   Passing UTC times + ctz is the documented correct approach.
+  const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encTitle}&dates=${startUTC}/${endUTC}&details=${desc}&location=${location}&ctz=${encTZ}`;
+
+  // Outlook Live / Office 365:
+  //   startdt/enddt accept ISO 8601 with offset (e.g. 2026-04-01T22:00:00+08:00)
+  //   This pins the event to the correct wall-clock time regardless of viewer timezone.
+  const outlookUrl = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encTitle}&startdt=${startOL}&enddt=${endOL}&body=${desc}&location=${location}&allday=false&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent`;
+
+  // Office 365 (work accounts — same params, different domain)
+  const o365Url = `https://outlook.office.com/calendar/0/deeplink/compose?subject=${encTitle}&startdt=${startOL}&enddt=${endOL}&body=${desc}&location=${location}&allday=false&path=%2Fcalendar%2Faction%2Fcompose&rru=addevent`;
+
+  // Yahoo Calendar: uses UTC compact format
+  const yahooUrl = `https://calendar.yahoo.com/?v=60&title=${encTitle}&st=${startUTC}&et=${endUTC}&desc=${desc}&in_loc=${location}`;
+
+  const urls = { google: googleUrl, outlook: outlookUrl, o365: o365Url, yahoo: yahooUrl };
+
+  ['google','outlook','o365','yahoo'].forEach(p => {
+    const el = document.getElementById('cal-' + p);
+    const openEl = document.getElementById('cal-' + p + '-open');
+    if (el) el.textContent = urls[p];
+    if (openEl) openEl.href = urls[p];
+  });
+
+  const sel = document.getElementById('cal-tz');
+  document.getElementById('cal-tz-label').textContent = sel.options[sel.selectedIndex].text;
+  document.getElementById('cal-output').classList.add('show');
+}
+
+function copyCal(elId) {
+  const text = document.getElementById(elId).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const flash = document.getElementById('cal-copied');
+    flash.classList.add('show');
+    setTimeout(() => flash.classList.remove('show'), 2000);
+  });
+}
+
+function sendCalToShortener(elId) {
+  const url = document.getElementById(elId).textContent;
+  document.getElementById('short-url').value = url;
+  document.querySelectorAll('.tab')[4].click();
 }
 
 // ─── ICS GENERATOR ─────────────────────────────────────────────────────────
-function toICSDate(dtLocal) {
-  return new Date(dtLocal).toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
-}
-
 function buildICSContent() {
-  const title = document.getElementById('ics-title').value.trim();
-  const start = document.getElementById('ics-start').value;
-  const end = document.getElementById('ics-end').value;
-  const location = document.getElementById('ics-location').value.trim();
-  const desc = document.getElementById('ics-desc').value.trim().replace(/\n/g,'\\n');
-  const organizer = document.getElementById('ics-organizer').value.trim();
-  const email = document.getElementById('ics-email').value.trim();
-  const reminder = document.getElementById('ics-reminder').value;
+  const title      = document.getElementById('ics-title').value.trim();
+  const start      = document.getElementById('ics-start').value;
+  const end        = document.getElementById('ics-end').value;
+  const tzName     = document.getElementById('ics-tz').value;
+  const location   = document.getElementById('ics-location').value.trim();
+  const desc       = document.getElementById('ics-desc').value.trim().replace(/\n/g,'\\n');
+  const organizer  = document.getElementById('ics-organizer').value.trim();
+  const email      = document.getElementById('ics-email').value.trim();
+  const reminder   = document.getElementById('ics-reminder').value;
   const recurrence = document.getElementById('ics-recurrence').value;
 
   if (!title || !start || !end) { alert('Title, start and end are required'); return null; }
@@ -1023,27 +1397,40 @@ function buildICSContent() {
   const uid = Date.now() + '@marketkit';
   const now = new Date().toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
 
+  // Use TZID-based local time — this is the correct RFC 5545 approach.
+  // The event is stored as a wall-clock time in the named timezone,
+  // so every attendee's calendar app converts it to their local time correctly.
+  const dtStart = toICSLocal(start);
+  const dtEnd   = toICSLocal(end);
+
   let ics = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
     'PRODID:-//MarketKit//EN',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
+    `X-WR-TIMEZONE:${tzName}`,
     'BEGIN:VEVENT',
     `UID:${uid}`,
     `DTSTAMP:${now}`,
-    `DTSTART:${toICSDate(start)}`,
-    `DTEND:${toICSDate(end)}`,
+    `DTSTART;TZID=${tzName}:${dtStart}`,
+    `DTEND;TZID=${tzName}:${dtEnd}`,
     `SUMMARY:${title}`,
   ];
 
-  if (location) ics.push(`LOCATION:${location}`);
-  if (desc) ics.push(`DESCRIPTION:${desc}`);
-  if (organizer || email) ics.push(`ORGANIZER;CN=${organizer || 'Organizer'}:mailto:${email || 'noreply@example.com'}`);
-  if (recurrence) ics.push(`RRULE:FREQ=${recurrence}`);
+  if (location)         ics.push(`LOCATION:${location}`);
+  if (desc)             ics.push(`DESCRIPTION:${desc}`);
+  if (organizer||email) ics.push(`ORGANIZER;CN=${organizer||'Organizer'}:mailto:${email||'noreply@example.com'}`);
+  if (recurrence)       ics.push(`RRULE:FREQ=${recurrence}`);
 
   if (reminder !== '0') {
-    ics.push('BEGIN:VALARM','TRIGGER:-PT' + reminder + 'M','ACTION:DISPLAY',`DESCRIPTION:Reminder: ${title}`,'END:VALARM');
+    ics.push(
+      'BEGIN:VALARM',
+      `TRIGGER:-PT${reminder}M`,
+      'ACTION:DISPLAY',
+      `DESCRIPTION:Reminder: ${title}`,
+      'END:VALARM'
+    );
   }
 
   ics.push('END:VEVENT','END:VCALENDAR');
@@ -1066,59 +1453,257 @@ function previewICS() {
   showOutput('ics', content);
 }
 
-// ─── QR CODE ───────────────────────────────────────────────────────────────
-let qrInstance = null;
+// ─── QR CODE — qrcode-generator (direct matrix via isDark) ────────────────
+// qrcode-generator exposes isDark(row,col) — no pixel sampling, always accurate
 
 function generateQR() {
-  const content = document.getElementById('qr-content').value.trim();
+  const content     = document.getElementById('qr-content').value.trim();
   if (!content) { alert('Enter content to encode'); return; }
+  const size        = parseInt(document.getElementById('qr-size').value);
+  const darkColor   = document.getElementById('qr-dark').value;
+  const lightColor  = document.getElementById('qr-light').value;
+  const finderColor = document.getElementById('qr-finder-color').value;
+  const ecLevel     = document.getElementById('qr-ec').value;
+  const moduleStyle = document.getElementById('qr-module-style').value;
+  const finderOuter = document.getElementById('qr-finder-outer').value;
+  const finderInner = document.getElementById('qr-finder-inner').value;
+  const margin      = parseInt(document.getElementById('qr-margin').value);
 
-  const size = parseInt(document.getElementById('qr-size').value);
-  const dark = document.getElementById('qr-dark').value;
-  const light = document.getElementById('qr-light').value;
-  const ec = document.getElementById('qr-ec').value;
+  let qr;
+  try {
+    // typeNumber 0 = auto-detect size; ecLevel = L/M/Q/H
+    qr = qrcode(0, ecLevel);
+    qr.addData(content);
+    qr.make();
+  } catch(e) {
+    try {
+      qr = qrcode(10, ecLevel);
+      qr.addData(content);
+      qr.make();
+    } catch(e2) {
+      alert('QR generation failed. Try a shorter URL or lower error correction level.');
+      return;
+    }
+  }
 
-  const container = document.getElementById('qr-canvas');
-  container.innerHTML = '';
+  const n = qr.getModuleCount();
+  // Build exact boolean matrix directly — isDark() is the authoritative source
+  const matrix = [];
+  for (let r = 0; r < n; r++) {
+    matrix[r] = [];
+    for (let c = 0; c < n; c++) {
+      matrix[r][c] = qr.isDark(r, c);
+    }
+  }
 
-  const ecMap = { L: QRCode.CorrectLevel.L, M: QRCode.CorrectLevel.M, Q: QRCode.CorrectLevel.Q, H: QRCode.CorrectLevel.H };
+  renderQRMatrix(matrix, size, darkColor, lightColor, finderColor, moduleStyle, finderOuter, finderInner, margin);
+}
 
-  qrInstance = new QRCode(container, {
-    text: content,
-    width: size,
-    height: size,
-    colorDark: dark,
-    colorLight: light,
-    correctLevel: ecMap[ec]
+function renderQRMatrix(matrix, canvasSize, darkColor, lightColor, finderColor, moduleStyle, finderOuter, finderInner, margin) {
+  const canvas = document.getElementById('qr-canvas');
+  const n = matrix.length;
+  canvas.width  = canvasSize;
+  canvas.height = canvasSize;
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = lightColor;
+  ctx.fillRect(0, 0, canvasSize, canvasSize);
+
+  const available = canvasSize - margin * 2;
+  const cell = available / n;
+
+  const finderPos = [{ r:0, c:0 }, { r:0, c:n-7 }, { r:n-7, c:0 }];
+
+  function inFinder(row, col) {
+    return finderPos.some(fp => row >= fp.r && row < fp.r+7 && col >= fp.c && col < fp.c+7);
+  }
+
+  function rr(x, y, w, h, radius) {
+    const r = Math.min(radius, w/2, h/2);
+    ctx.beginPath();
+    ctx.moveTo(x+r, y);
+    ctx.lineTo(x+w-r, y); ctx.arcTo(x+w, y, x+w, y+r, r);
+    ctx.lineTo(x+w, y+h-r); ctx.arcTo(x+w, y+h, x+w-r, y+h, r);
+    ctx.lineTo(x+r, y+h); ctx.arcTo(x, y+h, x, y+h-r, r);
+    ctx.lineTo(x, y+r); ctx.arcTo(x, y, x+r, y, r);
+    ctx.closePath(); ctx.fill();
+  }
+
+  // Data modules
+  for (let row = 0; row < n; row++) {
+    for (let col = 0; col < n; col++) {
+      if (!matrix[row][col] || inFinder(row, col)) continue;
+      const x = margin + col * cell;
+      const y = margin + row * cell;
+      ctx.fillStyle = darkColor;
+      if (moduleStyle === 'dot') {
+        ctx.beginPath();
+        ctx.arc(x + cell/2, y + cell/2, cell * 0.43, 0, Math.PI*2);
+        ctx.fill();
+      } else if (moduleStyle === 'rounded') {
+        const p = cell * 0.08;
+        rr(x+p, y+p, cell-p*2, cell-p*2, (cell-p*2) * 0.35);
+      } else {
+        ctx.fillRect(x, y, cell, cell);
+      }
+    }
+  }
+
+  // Finder patterns — drawn on top so they're always correct
+  finderPos.forEach(fp => {
+    const ox = margin + fp.c * cell;
+    const oy = margin + fp.r * cell;
+    const outer = cell * 7;
+    const bw    = cell;
+    const inner = cell * 5;
+    const dot   = cell * 3;
+
+    // Outer shape
+    ctx.fillStyle = finderColor;
+    if (finderOuter === 'circle') {
+      ctx.beginPath(); ctx.arc(ox+outer/2, oy+outer/2, outer/2, 0, Math.PI*2); ctx.fill();
+    } else if (finderOuter === 'rounded') {
+      rr(ox, oy, outer, outer, outer * 0.18);
+    } else {
+      ctx.fillRect(ox, oy, outer, outer);
+    }
+
+    // White cutout
+    ctx.fillStyle = lightColor;
+    if (finderOuter === 'circle') {
+      ctx.beginPath(); ctx.arc(ox+outer/2, oy+outer/2, outer/2-bw, 0, Math.PI*2); ctx.fill();
+    } else if (finderOuter === 'rounded') {
+      rr(ox+bw, oy+bw, inner, inner, inner * 0.06);
+    } else {
+      ctx.fillRect(ox+bw, oy+bw, inner, inner);
+    }
+
+    // Inner dot
+    ctx.fillStyle = finderColor;
+    const dx = ox + bw + (inner - dot) / 2;
+    const dy = oy + bw + (inner - dot) / 2;
+    if (finderInner === 'circle') {
+      ctx.beginPath(); ctx.arc(dx+dot/2, dy+dot/2, dot/2, 0, Math.PI*2); ctx.fill();
+    } else if (finderInner === 'rounded') {
+      rr(dx, dy, dot, dot, dot * 0.25);
+    } else {
+      ctx.fillRect(dx, dy, dot, dot);
+    }
   });
 
   document.getElementById('qr-output').classList.add('show');
 }
 
+function clearQR() {
+  document.getElementById('qr-content').value = '';
+  const c = document.getElementById('qr-canvas');
+  c.getContext('2d').clearRect(0, 0, c.width, c.height);
+  document.getElementById('qr-output').classList.remove('show');
+}
+
 function downloadQR() {
-  const canvas = document.querySelector('#qr-canvas canvas');
-  if (!canvas) { alert('Generate a QR first'); return; }
+  const c = document.getElementById('qr-canvas');
+  if (!c.width) { alert('Generate a QR first'); return; }
   const a = document.createElement('a');
   a.download = 'qrcode.png';
-  a.href = canvas.toDataURL('image/png');
+  a.href = c.toDataURL('image/png');
   a.click();
 }
 
-function downloadQRSVG() {
-  const img = document.querySelector('#qr-canvas img');
-  if (!img) { alert('Generate a QR first'); return; }
-  // Convert canvas to SVG-wrapped image
-  const canvas = document.querySelector('#qr-canvas canvas');
-  const dataURL = canvas.toDataURL('image/png');
-  const size = parseInt(document.getElementById('qr-size').value);
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}">
-  <image href="${dataURL}" width="${size}" height="${size}"/>
-</svg>`;
-  const blob = new Blob([svg], { type: 'image/svg+xml' });
-  const a = document.createElement('a');
-  a.download = 'qrcode.svg';
-  a.href = URL.createObjectURL(blob);
-  a.click();
+// ─── MAILTO BUILDER ────────────────────────────────────────────────────────
+function buildMailto() {
+  const to      = document.getElementById('ml-to').value.trim();
+  if (!to) { alert('To: field is required'); return; }
+  const cc      = document.getElementById('ml-cc').value.trim();
+  const bcc     = document.getElementById('ml-bcc').value.trim();
+  const subject = document.getElementById('ml-subject').value.trim();
+  const body    = document.getElementById('ml-body').value.trim();
+
+  let link = `mailto:${encodeURIComponent(to)}`;
+  const params = [];
+  if (cc)      params.push(`cc=${encodeURIComponent(cc)}`);
+  if (bcc)     params.push(`bcc=${encodeURIComponent(bcc)}`);
+  if (subject) params.push(`subject=${encodeURIComponent(subject)}`);
+  if (body)    params.push(`body=${encodeURIComponent(body)}`);
+  if (params.length) link += '?' + params.join('&');
+
+  document.getElementById('ml-result').textContent = link;
+  document.getElementById('ml-test-link').href = link;
+  document.getElementById('ml-output').classList.add('show');
+}
+
+function copyMailto() {
+  const text = document.getElementById('ml-result').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const f = document.getElementById('ml-copied');
+    f.classList.add('show');
+    setTimeout(() => f.classList.remove('show'), 2000);
+  });
+}
+
+function clearMailto() {
+  ['ml-to','ml-cc','ml-bcc','ml-subject','ml-body'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('ml-output').classList.remove('show');
+}
+
+// ─── LOREM IPSUM GENERATOR ─────────────────────────────────────────────────
+const LOREM_WORDS = ['lorem','ipsum','dolor','sit','amet','consectetur','adipiscing','elit','sed','do','eiusmod','tempor','incididunt','ut','labore','et','dolore','magna','aliqua','enim','ad','minim','veniam','quis','nostrud','exercitation','ullamco','laboris','nisi','aliquip','ex','ea','commodo','consequat','duis','aute','irure','in','reprehenderit','voluptate','velit','esse','cillum','eu','fugiat','nulla','pariatur','excepteur','sint','occaecat','cupidatat','non','proident','sunt','culpa','qui','officia','deserunt','mollit','anim','id','est','laborum','pellentesque','habitant','morbi','tristique','senectus','netus','malesuada','fames','ac','turpis','egestas','urna','varius','viverra','nisl','pretium','fusce','leo','vel','diam','vulputate','sapien','nec','sagittis','aliquam','malesuada','bibendum','arcu','vitae','elementum','curabitur','augue','mauris','lacus','aenean','scelerisque','mi','fringilla','risus','feugiat','cursus','orci','tincidunt','augue','interdum','velit','laoreet','id','donec','ultrices','tincidunt','arcu','non','sodales','neque','sodales','feugiat','sed','lectus','vestibulum','mattis'];
+
+const MARKETING_WORDS = ['leverage','synergy','innovative','solutions','scalable','platform','transform','digital','strategy','growth','engagement','brand','customer','value','seamless','experience','optimise','conversion','revenue','pipeline','ecosystem','stakeholder','agile','roadmap','deliverable','touchpoint','omnichannel','data-driven','insight','metric'];
+
+function loremSentence(wordList, minW, maxW) {
+  const len = minW + Math.floor(Math.random() * (maxW - minW));
+  const words = Array.from({length: len}, () => wordList[Math.floor(Math.random() * wordList.length)]);
+  const s = words.join(' ');
+  return s.charAt(0).toUpperCase() + s.slice(1) + '.';
+}
+
+function loremParagraph(style) {
+  const wl = style === 'marketing' ? MARKETING_WORDS : LOREM_WORDS;
+  const sentCount = 3 + Math.floor(Math.random() * 4);
+  return Array.from({length: sentCount}, () => loremSentence(wl, 8, 18)).join(' ');
+}
+
+function generateLorem() {
+  const count   = parseInt(document.getElementById('lorem-count').value);
+  const style   = document.getElementById('lorem-style').value;
+  const startLI = document.getElementById('lorem-start').value === 'yes';
+  const format  = document.getElementById('lorem-format').value;
+
+  const CLASSIC_FIRST = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.';
+
+  const paras = [];
+  for (let i = 0; i < count; i++) {
+    if (i === 0 && startLI && style === 'classic') {
+      paras.push(CLASSIC_FIRST);
+    } else if (i === 0 && startLI && style !== 'classic') {
+      const rest = loremParagraph(style).split('. ').slice(1).join('. ');
+      paras.push('Lorem ipsum dolor sit amet. ' + rest);
+    } else {
+      paras.push(loremParagraph(style));
+    }
+  }
+
+  let output;
+  if (format === 'html') {
+    output = paras.map(p => `<p>${p}</p>`).join('\n');
+  } else {
+    output = paras.join('\n\n');
+  }
+
+  const wordCount = output.replace(/<[^>]+>/g,'').split(/\s+/).filter(Boolean).length;
+  document.getElementById('lorem-result').textContent = output;
+  document.getElementById('lorem-wordcount').textContent = `${wordCount} words · ${count} para${count > 1 ? 's' : ''}`;
+  document.getElementById('lorem-output').classList.add('show');
+}
+
+function copyLorem() {
+  const text = document.getElementById('lorem-result').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const f = document.getElementById('lorem-copied');
+    f.classList.add('show');
+    setTimeout(() => f.classList.remove('show'), 2000);
+  });
 }
 
 // ─── URL SHORTENER ─────────────────────────────────────────────────────────
@@ -1346,7 +1931,21 @@ function cdReset() {
 }
 // ─── INIT ──────────────────────────────────────────────────────────────────
 applySettingsToUI();
+detectAndSetTimezone();
+generateLorem();
 
 </script>
-</body>
-</html>
+
+<footer style="position:relative;z-index:1;margin-top:60px;padding:32px 20px 48px;border-top:1px solid #2a2a3d;text-align:center;">
+  <div style="max-width:960px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:14px;">
+    <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:#e2e8f0;letter-spacing:-0.3px;">
+      Built something with MarketKit?
+    </div>
+    <p style="font-family:'DM Mono',monospace;font-size:0.78rem;color:#64748b;max-width:460px;line-height:1.7;">
+      Got questions, feedback, or want to collaborate on marketing automation and AI tools? Drop me a line.
+    </p>
+    <a href="/cdn-cgi/l/email-protection#7e161f1a173e1b1717121f1c501d1113" style="display:inline-flex;align-items:center;gap:10px;background:#6ee7b7;color:#0a0a0f;font-family:'DM Mono',monospace;font-size:0.8rem;font-weight:500;padding:12px 26px;border-radius:10px;text-decoration:none;letter-spacing:0.04em;transition:background 0.2s;" onmouseover="this.style.background='#34d399'" onmouseout="this.style.background='#6ee7b7'">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+      <span class="__cf_email__" data-cfemail="1e767f7a775e7b7777727f7c307d7173">[email&#160;protected]</span>
+    </a>
+    <p style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#2a2a3d;margin-top:8
