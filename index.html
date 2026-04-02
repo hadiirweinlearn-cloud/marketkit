@@ -307,6 +307,69 @@
     margin-top: 12px;
   }
 
+  /* Affiliate cards */
+  .aff-card {
+    margin-top: 16px;
+    background: linear-gradient(135deg, rgba(110,231,183,0.04), rgba(129,140,248,0.04));
+    border: 1px solid rgba(110,231,183,0.15);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .aff-card-title {
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .aff-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .aff-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    flex: 1;
+    min-width: 180px;
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .aff-item:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+  }
+  .aff-item-name {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+  }
+  .aff-item-desc {
+    font-size: 0.68rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .aff-item-badge {
+    font-size: 0.62rem;
+    color: var(--accent);
+    margin-top: 4px;
+  }
+  .aff-disclosure {
+    font-size: 0.62rem;
+    color: var(--muted);
+    margin-top: 10px;
+    opacity: 0.7;
+  }
+
   @media (max-width: 600px) {
     .form-grid, .form-grid.three { grid-template-columns: 1fr; }
     .logo { font-size: 1.8rem; }
@@ -316,6 +379,11 @@
 </style>
 </head>
 <body>
+<!-- Above-fold affiliate disclosure strip -->
+<div style="background:rgba(110,231,183,0.06);border-bottom:1px solid rgba(110,231,183,0.12);padding:8px 20px;text-align:center;font-family:'DM Mono',monospace;font-size:0.68rem;color:#64748b;line-height:1.6;">
+  ★ Some links on this page are affiliate links — I may earn a commission if you purchase, at no extra cost to you. &nbsp;·&nbsp; <a href="/terms.html" style="color:#818cf8;text-decoration:none;">Terms</a> &nbsp;·&nbsp; <a href="/privacy.html" style="color:#818cf8;text-decoration:none;">Privacy</a>
+</div>
+
 <div class="wrapper">
   <header>
     <div class="logo">MarketKit</div>
@@ -333,6 +401,7 @@
     <button class="tab" onclick="switchTab(event,'mailto')">✉ Mailto</button>
     <button class="tab" onclick="switchTab(event,'lorem')">¶ Lorem Ipsum</button>
     <button class="tab" onclick="switchTab(event,'settings')">⚙ Settings</button>
+    <button class="tab" onclick="switchTab(event,'resources')">★ Resources</button>
   </div>
 
   <!-- UTM Builder -->
@@ -442,6 +511,27 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+    <!-- Affiliate: UTM tools -->
+    <div class="aff-card">
+      <div class="aff-card-title">★ Level up your UTM workflow</div>
+      <div class="aff-grid">
+        <a class="aff-item" href="https://utm.io/?via=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">UTM.io</span>
+          <span class="aff-item-desc">Team UTM builder with naming rules, campaign history, and link management.</span>
+        </a>
+        <a class="aff-item" href="https://semrush.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">SEMrush</span>
+          <span class="aff-item-desc">Track campaign performance, keyword rankings, and competitive analysis.</span>
+        </a>
+        <a class="aff-item" href="https://rebrandly.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">Rebrandly</span>
+          <span class="aff-item-desc">Branded short links with UTM support and click analytics dashboard.</span>
+        </a>
+      </div>
+      <div class="aff-disclosure">Affiliate links — I may earn a commission if you purchase, at no extra cost to you.</div>
     </div>
   </div>
 
@@ -798,6 +888,21 @@
         </div>
       </div>
     </div>
+    <!-- Affiliate: QR / print tools -->
+    <div class="aff-card">
+      <div class="aff-card-title">★ Print & design tools for your QR campaigns</div>
+      <div class="aff-grid">
+        <a class="aff-item" href="https://canva.com/affiliates/marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">Canva Pro</span>
+          <span class="aff-item-desc">Design QR code flyers, social posts, and marketing collateral in minutes.</span>
+        </a>
+        <a class="aff-item" href="https://adobe.com/express/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">Adobe Express</span>
+          <span class="aff-item-desc">Quick-start templates for embedding QR codes into branded materials.</span>
+        </a>
+      </div>
+      <div class="aff-disclosure">Affiliate links — I may earn a commission if you purchase, at no extra cost to you.</div>
+    </div>
   </div>
 
   <!-- URL Shortener -->
@@ -840,6 +945,21 @@
       <div style="font-size:0.72rem;color:var(--muted);">Recent shortened URLs (this session)</div>
       <div class="url-list" id="short-history"></div>
       <div class="note">💡 TinyURL links are permanent and free. For branded domains (bit.ly, rebrandly), use those services directly.</div>
+    </div>
+    <!-- Affiliate: branded links -->
+    <div class="aff-card">
+      <div class="aff-card-title">★ Upgrade to branded short links</div>
+      <div class="aff-grid">
+        <a class="aff-item" href="https://rebrandly.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">Rebrandly</span>
+          <span class="aff-item-desc">Custom domain short links with click tracking, UTM builder, and team access.</span>
+        </a>
+        <a class="aff-item" href="https://bitly.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">Bitly</span>
+          <span class="aff-item-desc">Industry-standard link shortener with QR codes, link-in-bio, and analytics.</span>
+        </a>
+      </div>
+      <div class="aff-disclosure">Affiliate links — I may earn a commission if you purchase, at no extra cost to you.</div>
     </div>
   </div>
 
@@ -932,6 +1052,25 @@
       </div>
       <div class="note">💡 Paste the snippet into any HTML page, email template (ESP with raw HTML support), or landing page builder. The timer runs purely in JavaScript — no external dependencies.</div>
     </div>
+    <!-- Affiliate: landing pages -->
+    <div class="aff-card">
+      <div class="aff-card-title">★ Build landing pages for your countdown campaigns</div>
+      <div class="aff-grid">
+        <a class="aff-item" href="https://unbounce.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">Unbounce</span>
+          <span class="aff-item-desc">AI-powered landing page builder — embed your countdown timer and go live fast.</span>
+        </a>
+        <a class="aff-item" href="https://leadpages.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">Leadpages</span>
+          <span class="aff-item-desc">High-converting landing page templates with countdown timer support built in.</span>
+        </a>
+        <a class="aff-item" href="https://mailerlite.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">MailerLite</span>
+          <span class="aff-item-desc">Email platform with countdown timers built into the email editor — no embed needed.</span>
+        </a>
+      </div>
+      <div class="aff-disclosure">Affiliate links — I may earn a commission if you purchase, at no extra cost to you.</div>
+    </div>
   </div>
 
   <!-- Mailto Builder -->
@@ -976,6 +1115,25 @@
         </div>
       </div>
       <div class="note" style="margin-top:12px;">💡 Paste the mailto: link into an HTML anchor tag: <span style="color:var(--accent);font-size:0.7rem;">&lt;a href="mailto:..."&gt;Contact us&lt;/a&gt;</span></div>
+    </div>
+    <!-- Affiliate: email platforms -->
+    <div class="aff-card">
+      <div class="aff-card-title">★ Send better marketing emails</div>
+      <div class="aff-grid">
+        <a class="aff-item" href="https://mailerlite.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">MailerLite</span>
+          <span class="aff-item-desc">Free up to 1,000 subscribers. Drag-and-drop editor, automation, and landing pages.</span>
+        </a>
+        <a class="aff-item" href="https://convertkit.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">ConvertKit</span>
+          <span class="aff-item-desc">Built for creators — sequences, tagging, and a clean subscriber dashboard.</span>
+        </a>
+        <a class="aff-item" href="https://brevo.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">Brevo</span>
+          <span class="aff-item-desc">Email + SMS + WhatsApp marketing. Free plan includes 300 emails/day.</span>
+        </a>
+      </div>
+      <div class="aff-disclosure">Affiliate links — I may earn a commission if you purchase, at no extra cost to you.</div>
     </div>
   </div>
 
@@ -1035,6 +1193,118 @@
         <div id="lorem-result" style="font-size:0.8rem;line-height:1.8;color:var(--text);white-space:pre-wrap;"></div>
       </div>
     </div>
+  </div>
+
+  <!-- Resources / Affiliate Page -->
+  <div id="panel-resources" class="panel">
+    <div class="section-title"><span class="dot" style="background:#f59e0b"></span>Recommended Tools & Resources</div>
+    <p class="section-desc">Handpicked tools that pair well with MarketKit. Some links are affiliate links — marked with ★. If you purchase through them I earn a small commission at no extra cost to you.</p>
+
+    <!-- UTM & Analytics -->
+    <div class="card">
+      <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:4px;">⚡ UTM & Campaign Tracking</div>
+      <p class="section-desc" style="margin-bottom:16px;">Go beyond manual UTM building — manage campaigns at scale.</p>
+      <div class="aff-grid">
+        <a class="aff-item" href="https://utm.io/?via=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">UTM.io ★</span>
+          <span class="aff-item-desc">The professional team UTM builder — naming conventions, campaign templates, link history, and analytics in one place. The natural upgrade from MarketKit's UTM tab.</span>
+        </a>
+        <a class="aff-item" href="https://semrush.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">SEMrush ★</span>
+          <span class="aff-item-desc">All-in-one marketing platform — track campaign ROI, keyword rankings, backlinks, and competitive intelligence across every channel.</span>
+        </a>
+        <a class="aff-item" href="https://ahrefs.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">Ahrefs ★</span>
+          <span class="aff-item-desc">Best-in-class SEO toolset. Audit your site, track keyword performance, and analyse campaign-driven organic traffic growth.</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Link & URL tools -->
+    <div class="card">
+      <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:4px;">🔗 Link Management & Shortening</div>
+      <p class="section-desc" style="margin-bottom:16px;">Upgrade from plain TinyURL to branded, trackable links.</p>
+      <div class="aff-grid">
+        <a class="aff-item" href="https://rebrandly.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">Rebrandly ★</span>
+          <span class="aff-item-desc">Custom-domain short links with UTM builder, click heatmaps, team workspaces, and API access. Best Bitly alternative.</span>
+        </a>
+        <a class="aff-item" href="https://bitly.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">Bitly ★</span>
+          <span class="aff-item-desc">The industry standard — branded short links, QR code generator, link-in-bio pages, and a clean analytics dashboard.</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Email marketing -->
+    <div class="card">
+      <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:4px;">✉ Email Marketing Platforms</div>
+      <p class="section-desc" style="margin-bottom:16px;">Where your mailto links, calendar invites, and campaigns actually get sent.</p>
+      <div class="aff-grid">
+        <a class="aff-item" href="https://mailerlite.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">MailerLite ★</span>
+          <span class="aff-item-desc">Clean, affordable, and powerful. Free up to 1,000 subscribers — drag-and-drop editor, automation flows, landing pages, and countdown timers built in.</span>
+        </a>
+        <a class="aff-item" href="https://convertkit.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">ConvertKit ★</span>
+          <span class="aff-item-desc">Built for creators and marketers — subscriber tagging, visual automation, sequence builder, and a free newsletter plan up to 1,000 subs.</span>
+        </a>
+        <a class="aff-item" href="https://brevo.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">Brevo ★</span>
+          <span class="aff-item-desc">Email + SMS + WhatsApp marketing in one platform. Generous free plan with 300 emails/day — great for Southeast Asia markets.</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Landing pages -->
+    <div class="card">
+      <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:4px;">🚀 Landing Pages & CRO</div>
+      <p class="section-desc" style="margin-bottom:16px;">Where your UTM links should point — high-converting landing pages.</p>
+      <div class="aff-grid">
+        <a class="aff-item" href="https://unbounce.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">Unbounce ★</span>
+          <span class="aff-item-desc">AI-powered landing page builder with A/B testing, dynamic text replacement for UTM campaigns, and smart traffic routing.</span>
+        </a>
+        <a class="aff-item" href="https://leadpages.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">Leadpages ★</span>
+          <span class="aff-item-desc">Drag-and-drop landing pages, pop-ups, and alert bars. Countdown timer support built in — perfect pairing with MarketKit's countdown embed.</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Design -->
+    <div class="card">
+      <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:4px;">🎨 Design & Creative</div>
+      <p class="section-desc" style="margin-bottom:16px;">Design assets to go with your QR codes, campaigns, and social posts.</p>
+      <div class="aff-grid">
+        <a class="aff-item" href="https://canva.com/affiliates/marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">Canva Pro ★</span>
+          <span class="aff-item-desc">Design QR code flyers, social media graphics, email headers, and presentation decks in minutes. The most-used design tool for marketers.</span>
+        </a>
+        <a class="aff-item" href="https://adobe.com/express/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">Adobe Express ★</span>
+          <span class="aff-item-desc">Quick-start branded templates from Adobe. Embed QR codes into professional print and digital materials with one click.</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Hosting -->
+    <div class="card">
+      <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--text);margin-bottom:4px;">☁ Hosting & Domains</div>
+      <p class="section-desc" style="margin-bottom:16px;">Host your own marketing tools, landing pages, and websites.</p>
+      <div class="aff-grid">
+        <a class="aff-item" href="https://hostinger.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">Hostinger ★</span>
+          <span class="aff-item-desc">Fast, affordable web hosting starting from ~SGD $3/month. Includes free domain, SSL, and one-click WordPress — great for hosting MarketKit with a custom domain.</span>
+        </a>
+        <a class="aff-item" href="https://namecheap.com/?ref=marketkit" target="_blank" rel="noopener sponsored">
+          <span class="aff-item-name">Namecheap ★</span>
+          <span class="aff-item-desc">Cheap domain registration and renewal. Great for grabbing your branded .com or .sg domain before pointing it to Cloudflare Pages.</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="note">Affiliate links — I may earn a commission if you purchase, at no extra cost to you. I only recommend tools I'd genuinely use or that directly complement MarketKit's workflow.</div>
   </div>
 
   <!-- Settings -->
@@ -2123,4 +2393,36 @@ generateLorem();
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
       <span class="__cf_email__" data-cfemail="1e767f7a775e7b7777727f7c307d7173">[email&#160;protected]</span>
     </a>
-    <p style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#2a2a3d;margin-top:8
+    <p style="font-family:'DM Mono',monospace;font-size:0.68rem;color:#2a2a3d;margin-top:8px;">
+      © 2026 MarketKit · Made with ♥ for marketers ·
+      <a href="/tools.html" style="color:#64748b;text-decoration:none;">Recommended Tools</a> · <a href="/terms.html" style="color:#64748b;text-decoration:none;">Terms of Use</a> · <a href="/privacy.html" style="color:#64748b;text-decoration:none;">Privacy Policy</a>
+    </p>
+  </div>
+</footer>
+
+
+<!-- Cookie / Tracking Notice Banner -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#13131a;border-top:1px solid #2a2a3d;padding:14px 20px;font-family:'DM Mono',monospace;">
+  <div style="max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <p style="font-size:0.72rem;color:#94a3b8;line-height:1.7;flex:1;min-width:240px;">
+      This site uses Google Fonts and Cloudflare CDN — standard requests that may log your IP address. No tracking cookies are set by MarketKit. Some links are affiliate links marked ★.
+      <a href="/privacy.html" style="color:#818cf8;text-decoration:none;">Privacy Policy</a> ·
+      <a href="/terms.html" style="color:#818cf8;text-decoration:none;">Terms of Use</a>
+    </p>
+    <button onclick="dismissCookieBanner()" style="background:#6ee7b7;color:#0a0a0f;border:none;border-radius:8px;padding:8px 18px;font-family:'DM Mono',monospace;font-size:0.75rem;cursor:pointer;white-space:nowrap;font-weight:500;">Got it</button>
+  </div>
+</div>
+<script>
+(function(){
+  if(!localStorage.getItem('mk_cookie_ok')){
+    document.getElementById('cookie-banner').style.display='block';
+  }
+})();
+function dismissCookieBanner(){
+  localStorage.setItem('mk_cookie_ok','1');
+  document.getElementById('cookie-banner').style.display='none';
+}
+</script>
+
+</body>
+</html>
