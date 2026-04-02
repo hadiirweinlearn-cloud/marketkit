@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — MarketKit</title>
+<meta name="description" content="Privacy Policy for MarketKit. Explains what data is collected, how it is used, and your rights under Singapore's PDPA.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --surface: #13131a; --surface2: #1c1c28;
+    --border: #2a2a3d; --accent: #6ee7b7; --accent2: #818cf8;
+    --accent3: #f472b6; --text: #e2e8f0; --muted: #64748b;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Mono', monospace; background: var(--bg); color: var(--text); min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: linear-gradient(rgba(110,231,183,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(110,231,183,0.03) 1px, transparent 1px);
+    background-size: 40px 40px; pointer-events: none; z-index: 0;
+  }
+  .wrapper { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 0 24px 80px; }
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 24px 0 20px; border-bottom: 1px solid var(--border); margin-bottom: 52px; }
+  .nav-logo { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+  .nav-link { font-size: 0.75rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .nav-link:hover { color: var(--accent); }
+  h1 { font-family: 'Syne', sans-serif; font-size: 1.9rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; }
+  .meta { font-size: 0.72rem; color: var(--muted); margin-bottom: 48px; }
+  .summary-box {
+    background: rgba(110,231,183,0.06); border: 1px solid rgba(110,231,183,0.2);
+    border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0;
+    padding: 18px 20px; margin-bottom: 48px;
+  }
+  .summary-box p { font-size: 0.82rem; color: var(--text); line-height: 1.8; }
+  .summary-box strong { color: var(--accent); }
+  section { margin-bottom: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+  h2 { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 14px; color: var(--text); }
+  p { font-size: 0.8rem; color: var(--muted); line-height: 1.9; margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+  a { color: var(--accent2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  ul { margin: 10px 0 10px 20px; display: flex; flex-direction: column; gap: 6px; }
+  li { font-size: 0.8rem; color: var(--muted); line-height: 1.8; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.76rem; }
+  th { text-align: left; padding: 10px 12px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); font-weight: 500; }
+  td { padding: 10px 12px; color: var(--muted); border: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  code { background: var(--surface2); padding: 1px 5px; border-radius: 4px; font-size: 0.78rem; color: var(--accent); }
+  .updated { font-size: 0.68rem; color: var(--muted); margin-top: 40px; opacity: 0.6; }
+  footer { margin-top: 64px; padding: 28px 0; border-top: 1px solid var(--border); text-align: center; font-size: 0.72rem; color: var(--muted); line-height: 1.8; }
+  footer a { color: var(--accent2); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <nav>
+    <a class="nav-logo" href="/">MarketKit</a>
+    <a class="nav-link" href="/">← Back to tool</a>
+  </nav>
+
+  <h1>Privacy Policy</h1>
+  <p class="meta">Effective date: 3 April 2026 · MarketKit by Hadi Irwein · <a href="mailto:hadi@eiilab.com">hadi@eiilab.com</a> · See also: <a href="/terms.html">Terms of Use</a></p>
+
+  <div class="summary-box">
+    <p><strong>Plain-English Summary</strong><br>
+    MarketKit does not track you, sell your data, or store anything about you on its servers. Everything you type into the tool stays in your browser. The only external data exposure comes from standard CDN requests (Google Fonts, Cloudflare, jsDelivr) and the URL Shortener feature which sends your URL to TinyURL. A cookie notice is shown on your first visit to acknowledge this minimal exposure. That's it.</p>
+  </div>
+
+  <section>
+    <h2>1. Who We Are</h2>
+    <p>MarketKit is operated by Hadi Irwein, trading as eiilab, based in Singapore. For privacy-related enquiries, contact <a href="mailto:hadi@eiilab.com">hadi@eiilab.com</a>.</p>
+    <p>This Privacy Policy applies to the MarketKit website, including the main toolkit, the <a href="/tools.html">Recommended Tools</a> page, the <a href="/terms.html">Terms of Use</a>, and this Privacy Policy page.</p>
+  </section>
+
+  <section>
+    <h2>2. What Data Is Collected and Why</h2>
+    <p>The table below summarises every data point that may be collected or exposed when you use MarketKit.</p>
+    <table>
+      <tr>
+        <th>Data type</th>
+        <th>Source</th>
+        <th>Purpose</th>
+        <th>Stored by MarketKit?</th>
+      </tr>
+      <tr>
+        <td>IP address, browser type, referring URL</td>
+        <td>Cloudflare Pages (hosting) and Cloudflare CDN</td>
+        <td>Security, DDoS protection, server access logs</td>
+        <td>No — held by Cloudflare per their policy</td>
+      </tr>
+      <tr>
+        <td>IP address, browser type</td>
+        <td>Google Fonts CDN</td>
+        <td>Font delivery; Google may log requests</td>
+        <td>No — held by Google per their policy</td>
+      </tr>
+      <tr>
+        <td>IP address, browser type</td>
+        <td>jsDelivr CDN</td>
+        <td>QR library delivery; standard access logs</td>
+        <td>No — held by jsDelivr per their policy</td>
+      </tr>
+      <tr>
+        <td>The URL you enter</td>
+        <td>TinyURL API (URL Shortener tab only)</td>
+        <td>Generating a shortened link on your request</td>
+        <td>No — sent to TinyURL's servers only</td>
+      </tr>
+      <tr>
+        <td>UTM lists, campaign names</td>
+        <td>Settings tab — browser <code>localStorage</code></td>
+        <td>Persisting your preferences between sessions</td>
+        <td>Your device only — never sent anywhere</td>
+      </tr>
+      <tr>
+        <td>Email address &amp; message</td>
+        <td>Direct email to hadi@eiilab.com</td>
+        <td>Responding to your enquiry</td>
+        <td>Email inbox only — not stored in any database</td>
+      </tr>
+    </table>
+    <p>No other data is collected. MarketKit does not use analytics platforms (e.g. Google Analytics), advertising trackers, session recording tools, or any form of behavioural tracking.</p>
+  </section>
+
+  <section>
+    <h2>3. Cookies</h2>
+    <p>MarketKit does not set any first-party cookies for tracking or advertising purposes.</p>
+    <p>The following minimal technical exposure exists:</p>
+    <ul>
+      <li><strong>Cloudflare</strong> may set a security cookie (<code>__cf_bm</code>) as part of its bot management service. This is a technical necessity of using Cloudflare Pages hosting and is not used for advertising. It expires within 30 minutes of inactivity.</li>
+      <li><strong>Browser localStorage</strong> is used (not cookies) to save your Settings tab preferences. This is not a cookie and is not shared with any third party.</li>
+    </ul>
+    <p>A cookie and tracking notice is displayed on your first visit to this site. By continuing to use the site after dismissing this notice, you acknowledge the minimal data exposure described in this policy.</p>
+    <p>You may block third-party CDN requests using a browser extension such as uBlock Origin. Note that blocking Google Fonts will fall back to your system font, and blocking jsDelivr will disable the QR code generator.</p>
+  </section>
+
+  <section>
+    <h2>4. Third-Party Services &amp; Their Privacy Policies</h2>
+    <p>MarketKit relies on the following third-party services. Each has its own privacy policy which governs how they handle data from requests made when you visit this site:</p>
+    <ul>
+      <li><strong>Cloudflare Pages &amp; CDN</strong> — <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">cloudflare.com/privacypolicy</a></li>
+      <li><strong>Google Fonts</strong> — <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a></li>
+      <li><strong>jsDelivr CDN</strong> — <a href="https://www.jsdelivr.com/terms/privacy-policy-jsdelivr-net" target="_blank" rel="noopener">jsdelivr.com/terms/privacy-policy-jsdelivr-net</a></li>
+      <li><strong>TinyURL</strong> (URL Shortener feature only) — <a href="https://tinyurl.com/privacy" target="_blank" rel="noopener">tinyurl.com/privacy</a></li>
+    </ul>
+    <p>Affiliate links on the <a href="/tools.html">Recommended Tools</a> page point to third-party websites. Once you leave MarketKit, the privacy policy of the destination website applies. MarketKit is not responsible for the privacy practices of linked third-party services.</p>
+  </section>
+
+  <section>
+    <h2>5. Affiliate Links &amp; Tracking</h2>
+    <p>Some links on this website are affiliate links marked with ★. When you click an affiliate link, you are directed to a third-party website. That third-party website may use cookies or tracking pixels to attribute the referral to MarketKit. This tracking occurs on their platform and is governed by their privacy policy — not this one.</p>
+    <p>MarketKit does not receive any personally identifiable information about you as part of the affiliate relationship — only an anonymous commission notification if a qualifying purchase is made.</p>
+  </section>
+
+  <section>
+    <h2>6. Children's Privacy</h2>
+    <p>MarketKit is not directed at children under the age of 13 and does not knowingly collect any personal information from children. If you believe a child has provided personal information via this website, please contact <a href="mailto:hadi@eiilab.com">hadi@eiilab.com</a> and the information will be removed promptly.</p>
+  </section>
+
+  <section>
+    <h2>7. Your Rights (Singapore PDPA)</h2>
+    <p>Under the Singapore Personal Data Protection Act 2012 (PDPA), you have the right to:</p>
+    <ul>
+      <li><strong>Access</strong> — request information about any personal data held about you</li>
+      <li><strong>Correction</strong> — request correction of any inaccurate personal data</li>
+      <li><strong>Withdrawal of consent</strong> — withdraw consent to collection or use of your personal data at any time</li>
+      <li><strong>Data portability</strong> — request a copy of personal data you have provided in a portable format</li>
+    </ul>
+    <p>Given that MarketKit does not store personal data on its own servers, the only personal data that may be held is email correspondence. To exercise any of the above rights, please contact <a href="mailto:hadi@eiilab.com">hadi@eiilab.com</a>. Requests will be responded to within 30 days.</p>
+    <p>For data held by Cloudflare, Google, jsDelivr, or TinyURL, you should exercise your rights directly with those organisations via their respective privacy policies linked above.</p>
+  </section>
+
+  <section>
+    <h2>8. International Visitors</h2>
+    <p>MarketKit is operated from Singapore. If you access this website from outside Singapore, please be aware that your data (as processed by Cloudflare, Google, and other CDN providers) may be transferred to and processed in countries other than your own. By using this website, you consent to such transfers to the extent they are necessary for the Service to function.</p>
+    <p>For visitors in the European Economic Area (EEA): Cloudflare and Google comply with GDPR requirements. Where applicable, their Standard Contractual Clauses or equivalent mechanisms apply to international transfers.</p>
+  </section>
+
+  <section>
+    <h2>9. Data Retention</h2>
+    <ul>
+      <li><strong>Server logs (Cloudflare)</strong> — retained per Cloudflare's standard log retention policy (typically up to 7 days for free tier logs)</li>
+      <li><strong>Google Fonts request logs</strong> — retained per Google's log retention policy</li>
+      <li><strong>Email correspondence</strong> — retained for as long as necessary to respond to your enquiry, then deleted or anonymised</li>
+      <li><strong>localStorage (your device)</strong> — retained until you clear your browser data or revoke it manually</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>10. Security</h2>
+    <p>This website is served over HTTPS via Cloudflare Pages with TLS encryption. No sensitive personal data is collected or stored by MarketKit. All tool inputs are processed locally in your browser and are never transmitted to MarketKit's servers (except as described in Section 2).</p>
+  </section>
+
+  <section>
+    <h2>11. Changes to This Privacy Policy</h2>
+    <p>This Privacy Policy may be updated from time to time. The effective date at the top of this page will be updated accordingly. We encourage you to review this page periodically. Continued use of the Service following any changes constitutes acceptance of the revised policy.</p>
+  </section>
+
+  <section>
+    <h2>12. Contact</h2>
+    <p>For any privacy-related questions, requests, or concerns:</p>
+    <p>Hadi Irwein<br>eiilab<br>Singapore<br><a href="mailto:hadi@eiilab.com">hadi@eiilab.com</a></p>
+    <p>We aim to respond to all privacy enquiries within 30 days.</p>
+  </section>
+
+  <p class="updated">Last updated: 3 April 2026</p>
+
+</div>
+
+<footer>
+  <a href="/">MarketKit</a> ·
+  <a href="/tools.html">Recommended Tools</a> ·
+  <a href="/terms.html">Terms of Use</a> ·
+  <a href="mailto:hadi@eiilab.com">hadi@eiilab.com</a><br>
+  © 2026 MarketKit · Hadi Irwein / eiilab · Singapore
+</footer>
+
+
+<!-- Cookie / Tracking Notice Banner -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#13131a;border-top:1px solid #2a2a3d;padding:14px 20px;font-family:'DM Mono',monospace;">
+  <div style="max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <p style="font-size:0.72rem;color:#94a3b8;line-height:1.7;flex:1;min-width:240px;">
+      This site uses Google Fonts and Cloudflare CDN — standard requests that may log your IP address. No tracking cookies are set by MarketKit.
+      <a href="/privacy.html" style="color:#818cf8;text-decoration:none;">Privacy Policy</a> ·
+      <a href="/terms.html" style="color:#818cf8;text-decoration:none;">Terms of Use</a>
+    </p>
+    <button onclick="dismissCookieBanner()" style="background:#6ee7b7;color:#0a0a0f;border:none;border-radius:8px;padding:8px 18px;font-family:'DM Mono',monospace;font-size:0.75rem;cursor:pointer;white-space:nowrap;font-weight:500;">Got it</button>
+  </div>
+</div>
+<script>
+(function(){
+  if(!localStorage.getItem('mk_cookie_ok')){
+    document.getElementById('cookie-banner').style.display='block';
+  }
+})();
+function dismissCookieBanner(){
+  localStorage.setItem('mk_cookie_ok','1');
+  document.getElementById('cookie-banner').style.display='none';
+}
+</script>
+
+</body>
+</html>
