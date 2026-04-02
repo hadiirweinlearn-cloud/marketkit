@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Use — MarketKit</title>
+<meta name="description" content="Terms of Use for MarketKit — a free online marketing toolkit. Covers usage terms, affiliate disclosure, disclaimer, and privacy.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1c1c28;
+    --border: #2a2a3d;
+    --accent: #6ee7b7;
+    --accent2: #818cf8;
+    --text: #e2e8f0;
+    --muted: #64748b;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Mono', monospace;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(110,231,183,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(110,231,183,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 0 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 52px;
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-decoration: none;
+  }
+
+  .nav-link {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-link:hover { color: var(--accent); }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.9rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+  }
+
+  .meta {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 48px;
+  }
+
+  /* Highlighted affiliate disclosure box */
+  .disclosure-box {
+    background: rgba(110,231,183,0.06);
+    border: 1px solid rgba(110,231,183,0.25);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    padding: 18px 20px;
+    margin-bottom: 48px;
+  }
+
+  .disclosure-box p {
+    font-size: 0.82rem;
+    color: var(--text);
+    line-height: 1.8;
+  }
+
+  .disclosure-box strong {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  section {
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  section:last-of-type {
+    border-bottom: none;
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+
+  p {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.9;
+    margin-bottom: 12px;
+  }
+
+  p:last-child { margin-bottom: 0; }
+
+  a { color: var(--accent2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  ul {
+    margin: 10px 0 10px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  li {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .updated {
+    font-size: 0.68rem;
+    color: var(--muted);
+    margin-top: 40px;
+    opacity: 0.6;
+  }
+
+  footer {
+    margin-top: 64px;
+    padding: 28px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  footer a { color: var(--accent2); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <nav>
+    <a class="nav-logo" href="/">MarketKit</a>
+    <a class="nav-link" href="/">← Back to tool</a>
+  </nav>
+
+  <h1>Terms of Use</h1>
+  <p class="meta">Effective date: 3 April 2026 · MarketKit by Hadi Irwein · <a href="mailto:hadi@eiilab.com">hadi@eiilab.com</a> · See also: <a href="/privacy.html">Privacy Policy</a></p>
+
+  <!-- ABOVE-THE-FOLD affiliate disclosure — required by FTC, PDPC, and AdSense -->
+  <div class="disclosure-box">
+    <p><strong>★ Affiliate Disclosure</strong><br>
+    Some links on this website — including on the <a href="/tools.html">Recommended Tools</a> page and within individual tool tabs — are affiliate links. If you click a link and make a purchase, I may earn a commission at no extra cost to you. All affiliate links are marked with ★. I only recommend tools I genuinely believe are useful. Affiliate commissions help keep this tool free.</p>
+  </div>
+
+  <div class="disclosure-box" style="border-left-color:var(--accent2);background:rgba(129,140,248,0.06);">
+    <p><strong>⚠ No Professional Advice</strong><br>
+    MarketKit is a productivity tool, not a source of marketing, legal, financial, or technical advice. Nothing on this website constitutes professional advice of any kind. You are solely responsible for how you use the outputs of this tool.</p>
+  </div>
+
+  <section>
+    <h2>1. Acceptance of Terms</h2>
+    <p>By accessing or using MarketKit (available at this website and any associated pages, collectively "the Service"), you agree to be bound by these Terms of Use and the <a href="/privacy.html">Privacy Policy</a>. If you do not agree, please do not use the Service.</p>
+    <p>These terms apply to all visitors and users of MarketKit, including the main toolkit, the Recommended Tools page, and any other pages hosted on this domain.</p>
+  </section>
+
+  <section>
+    <h2>2. Description of Service</h2>
+    <p>MarketKit is a free, browser-based marketing toolkit that provides the following tools:</p>
+    <ul>
+      <li>UTM link builder for campaign tracking</li>
+      <li>Calendar link generator (Google, Outlook, Office 365, Yahoo)</li>
+      <li>ICS file generator for calendar invites</li>
+      <li>QR code generator</li>
+      <li>URL shortener (via third-party APIs)</li>
+      <li>Countdown timer embed generator</li>
+      <li>Mailto link builder</li>
+      <li>Lorem ipsum text generator</li>
+      <li>Recommended Tools and resources directory</li>
+    </ul>
+    <p>All tools operate entirely within your browser. No user data is collected, stored, or transmitted to any server operated by MarketKit, except where explicitly noted (e.g. the URL shortener uses TinyURL's public API). See the <a href="/privacy.html">Privacy Policy</a> for full details.</p>
+  </section>
+
+  <section>
+    <h2>3. Affiliate Links &amp; Third-Party Relationships</h2>
+    <p><strong>Affiliate links — I may earn a commission if you purchase, at no extra cost to you.</strong></p>
+    <p>This website contains affiliate links to third-party products and services. When you click an affiliate link and subsequently make a purchase, MarketKit may receive a commission from the third-party vendor. This commission is paid by the vendor — you pay the same price you would pay by visiting the vendor's website directly.</p>
+    <p>All affiliate links are:</p>
+    <ul>
+      <li>Clearly identified with a ★ symbol adjacent to the link or tool name</li>
+      <li>Accompanied by the statement: "Affiliate links — I may earn a commission if you purchase, at no extra cost to you."</li>
+      <li>Selected based on relevance and genuine utility to MarketKit users — not solely on commission potential</li>
+    </ul>
+    <p>MarketKit does not guarantee the accuracy, quality, or suitability of any third-party product or service recommended on this site. You should conduct your own due diligence before making any purchase decision.</p>
+    <p>This disclosure complies with the United States Federal Trade Commission (FTC) guidelines on endorsements and testimonials, the Singapore Personal Data Protection Commission (PDPC) guidelines on digital advertising, and Google AdSense programme policies.</p>
+  </section>
+
+  <section>
+    <h2>4. No Professional Advice</h2>
+    <p>MarketKit is a free productivity tool provided for general informational and operational use only. Nothing on this website — including tool outputs, recommended tools, best practice guides, or any other content — constitutes marketing advice, legal advice, financial advice, technical advice, or any other form of professional advice.</p>
+    <p>Specifically:</p>
+    <ul>
+      <li><strong>UTM parameters and campaign tracking</strong> — outputs are generated based on your inputs. MarketKit makes no representation that generated UTM links will produce accurate analytics data in any specific platform.</li>
+      <li><strong>Calendar links and ICS files</strong> — timezone conversions are best-effort. MarketKit does not guarantee that generated calendar links will display correctly in all applications or for all recipients.</li>
+      <li><strong>QR codes</strong> — MarketKit does not guarantee that generated QR codes will be scannable by all devices or in all print conditions.</li>
+      <li><strong>Recommended tools</strong> — tool recommendations are the personal opinion of the site owner and do not constitute professional endorsement or advice.</li>
+    </ul>
+    <p>You should independently verify any outputs before using them in any commercial, professional, or public-facing context. If you require professional marketing, legal, or technical advice, please consult a qualified professional.</p>
+  </section>
+
+  <section>
+    <h2>5. No Warranty / Disclaimer</h2>
+    <p>MarketKit is provided "as is" and "as available" without warranty of any kind, either express or implied. To the fullest extent permitted by applicable law, MarketKit disclaims all warranties including but not limited to:</p>
+    <ul>
+      <li>Fitness for a particular purpose</li>
+      <li>Accuracy or completeness of generated links, QR codes, ICS files, or calendar links</li>
+      <li>Uninterrupted or error-free operation</li>
+      <li>Compatibility with specific third-party platforms (Google Calendar, Outlook, etc.)</li>
+    </ul>
+    <p>You are solely responsible for verifying that any UTM links, calendar invites, QR codes, or other outputs generated by MarketKit are correct before use in any marketing campaign or communication.</p>
+  </section>
+
+  <section>
+    <h2>6. Limitation of Liability</h2>
+    <p>To the maximum extent permitted by applicable law, MarketKit and its owner shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising from your use of the Service or reliance on any content, links, or tools provided, including but not limited to:</p>
+    <ul>
+      <li>Incorrect tracking data resulting from generated UTM links</li>
+      <li>Failed or incorrectly formatted calendar invites</li>
+      <li>QR codes that cannot be scanned or encode incorrect data</li>
+      <li>Losses resulting from purchases made through affiliate links</li>
+      <li>Any business loss, reputational damage, or data loss arising from use of this tool</li>
+    </ul>
+    <p>MarketKit's total liability to you for any claim arising from use of the Service shall not exceed SGD $0, as the Service is provided entirely free of charge.</p>
+  </section>
+
+  <section>
+    <h2>7. User Indemnity</h2>
+    <p>By using MarketKit, you agree to indemnify, defend, and hold harmless Hadi Irwein, eiilab, and any affiliates, agents, or successors from and against any and all claims, damages, losses, costs, and expenses (including reasonable legal fees) arising from or related to:</p>
+    <ul>
+      <li>Your use or misuse of the Service or any outputs generated by it</li>
+      <li>Any URLs, QR codes, campaign links, or other content you create using MarketKit that is used to mislead, defraud, spam, phish, or harm any third party</li>
+      <li>Your violation of these Terms of Use or any applicable law or regulation</li>
+      <li>Any claim by a third party resulting from content you created or distributed using MarketKit tools</li>
+      <li>Any infringement of intellectual property, privacy, or other rights of any person or entity arising from your use of the Service</li>
+    </ul>
+    <p>This indemnity clause is essential given that tools such as QR code generators and UTM link builders can technically be used to create links that redirect to harmful, fraudulent, or misleading content. MarketKit is provided in good faith as a productivity tool and accepts no liability for any such misuse.</p>
+  </section>
+
+  <section>
+    <h2>8. Cookies, Tracking &amp; Data Exposure</h2>
+    <p>MarketKit itself does not use cookies for tracking, advertising, or analytics purposes. However, certain third-party services loaded by this website may process data as a result of your visit. See the <a href="/privacy.html">Privacy Policy</a> for full details. A summary is provided below:</p>
+    <ul>
+      <li><strong>Google Fonts</strong> — fonts are loaded from Google's CDN. Your IP address and browser information may be logged by Google as part of this request.</li>
+      <li><strong>Cloudflare CDN / Cloudflare Pages</strong> — this site is hosted on Cloudflare Pages and uses Cloudflare's CDN to load certain JavaScript libraries. Cloudflare may log your IP address, browser type, and referring URL for security and performance purposes.</li>
+      <li><strong>jsDelivr CDN</strong> — a QR encoding library is loaded from jsDelivr. Standard server access logs may be maintained.</li>
+      <li><strong>TinyURL API</strong> — if you use the URL Shortener feature, the URL you enter is transmitted to TinyURL's servers to generate a shortened link.</li>
+    </ul>
+    <p>By continuing to use this site after dismissing the cookie notice, you acknowledge this minimal data exposure. You may block third-party requests using a browser extension such as uBlock Origin if you wish to prevent CDN logging.</p>
+  </section>
+
+  <section>
+    <h2>9. Third-Party Services</h2>
+    <p>MarketKit has no control over and assumes no responsibility for the content, privacy policies, or practices of any third-party services linked from or used by this website.</p>
+  </section>
+
+  <section>
+    <h2>10. Permitted Use</h2>
+    <p>You may use MarketKit freely for personal, professional, and commercial marketing purposes. You may not:</p>
+    <ul>
+      <li>Reproduce or redistribute MarketKit's source code for commercial resale without prior written permission</li>
+      <li>Use the tool to generate URLs, QR codes, or content intended to mislead, defraud, phish, spam, or harm any person or entity</li>
+      <li>Attempt to reverse-engineer, scrape, or systematically extract data from this website</li>
+      <li>Use the Service in any way that violates any applicable local, national, or international law or regulation</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>11. Intellectual Property</h2>
+    <p>The MarketKit name, design, and original content are the property of Hadi Irwein / eiilab. The underlying QR encoding library (qrcode-generator) and QRCodeJS are open-source and used under their respective licences.</p>
+  </section>
+
+  <section>
+    <h2>12. Changes to These Terms</h2>
+    <p>These Terms of Use may be updated from time to time. The effective date at the top of this page will be updated accordingly. Continued use of the Service after any changes constitutes acceptance of the revised terms.</p>
+  </section>
+
+  <section>
+    <h2>13. Governing Law</h2>
+    <p>These Terms of Use shall be governed by and construed in accordance with the laws of the Republic of Singapore, without regard to conflict of law principles. Any disputes arising shall be subject to the exclusive jurisdiction of the courts of Singapore.</p>
+  </section>
+
+  <section>
+    <h2>14. Contact</h2>
+    <p>For any questions about these Terms of Use, the Privacy Policy, affiliate relationships, or the Service generally, please contact:</p>
+    <p>Hadi Irwein<br>eiilab<br>Singapore<br><a href="mailto:hadi@eiilab.com">hadi@eiilab.com</a></p>
+  </section>
+
+  <p class="updated">Last updated: 3 April 2026</p>
+
+</div>
+
+<footer>
+  <a href="/">MarketKit</a> ·
+  <a href="/tools.html">Recommended Tools</a> ·
+  <a href="/privacy.html">Privacy Policy</a> ·
+  <a href="mailto:hadi@eiilab.com">hadi@eiilab.com</a><br>
+  © 2026 MarketKit · Hadi Irwein / eiilab · Singapore
+</footer>
+
+
+<!-- Cookie / Tracking Notice Banner -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#13131a;border-top:1px solid #2a2a3d;padding:14px 20px;font-family:'DM Mono',monospace;">
+  <div style="max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <p style="font-size:0.72rem;color:#94a3b8;line-height:1.7;flex:1;min-width:240px;">
+      This site uses Google Fonts and Cloudflare CDN — standard requests that may log your IP address. No tracking cookies are set by MarketKit.
+      <a href="/privacy.html" style="color:#818cf8;text-decoration:none;">Privacy Policy</a> ·
+      <a href="/terms.html" style="color:#818cf8;text-decoration:none;">Terms of Use</a>
+    </p>
+    <button onclick="dismissCookieBanner()" style="background:#6ee7b7;color:#0a0a0f;border:none;border-radius:8px;padding:8px 18px;font-family:'DM Mono',monospace;font-size:0.75rem;cursor:pointer;white-space:nowrap;font-weight:500;">Got it</button>
+  </div>
+</div>
+<script>
+(function(){
+  if(!localStorage.getItem('mk_cookie_ok')){
+    document.getElementById('cookie-banner').style.display='block';
+  }
+})();
+function dismissCookieBanner(){
+  localStorage.setItem('mk_cookie_ok','1');
+  document.getElementById('cookie-banner').style.display='none';
+}
+</script>
+
+</body>
+</html>
